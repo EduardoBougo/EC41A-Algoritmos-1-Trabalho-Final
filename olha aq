@@ -1,5 +1,5 @@
 int validarData (struct Data dt){
-
+    int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
     
     if((dt.mes == 2) && anoBissexto(dt.ano)){ // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mes
