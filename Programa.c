@@ -54,16 +54,25 @@ int contemSomenteNumeros(char text[15]);
 int validarAnoFabricacao(int ano);
 int validarData(Data dt);
 int anoBissexto(int ano);
-Cliente VincularCliente(char nomeCliente[50]);
+int VincularCliente(char nomeCliente[50]);
+void buscarClientePeloNome(char nome[50]);
+void buscarCarroPelaPlaca(char placa[15]);
+int kilometragemCarros(float km);
+
+void bancoDeDados(void);
+void agruparPorAno(void);
+void linha(void);
 
 /**********************************************
         Declaração das variaveis Globais
 **********************************************/
 
-int g_qtdClientes = 0;
-int g_qtdCarros = 0;
+int g_qtdClientes = 3;
+int g_qtdCarros = 2;
 Cliente g_clientes[10];
 Carro g_carros[10];
+
+
 
 /**********************************************
                     Int main()
@@ -71,15 +80,27 @@ Carro g_carros[10];
 
 int main()
 {
+    bancoDeDados();
+    
+    int quantidade = kilometragemCarros(5000);
+    printf("Quantidade de carros que tem mais de 5000 km: %d\n", quantidade);
 
+    agruparPorAno();
+
+    /*linha();
     cadastrarCliente();
+    linha();
+    cadastrarCliente();
+    linha();
     cadastrarCarro();
+    linha();
     cadastrarCarro();
+    linha();
 
-    int i = 0;
-    for(i = 0; i < g_qtdCarros; i++) {
-        printf("%s\n", g_carros[i].cliente.nome);
-    }
+    buscarClientePeloNome("ronaldo");
+    buscarCarroPelaPlaca("opa123");
+    linha();*/
+
 
     return 0;
 }
@@ -127,11 +148,20 @@ void cadastrarCarro(void)
     int validar = 0;
     char nome[50];
 
-    printf("Digite o nome do cliente: ");
-    fgets(nome, 50, stdin);
-    nome[strlen(nome) - 1] = '\0';
-    g_carros[g_qtdCarros].cliente = VincularCliente(nome);
+    do
+    {
+        printf("Digite o nome do cliente: ");
+        fgets(nome, 50, stdin);
+        nome[strlen(nome) - 1] = '\0';
 
+        validar = VincularCliente(nome);
+        if(validar == (-1)) {
+            printf("Cliente nao existe\n");
+        }
+    } while (validar == (-1));
+
+    g_carros[g_qtdCarros].cliente = g_clientes[VincularCliente(nome)];
+    
     printf("Digite o modelo do carro: ");
     fgets(g_carros[g_qtdCarros].modelo, 50, stdin);
     g_carros[g_qtdCarros].modelo[strlen(g_carros[g_qtdCarros].modelo) - 1] = '\0';
@@ -139,7 +169,6 @@ void cadastrarCarro(void)
     printf("Digite a placa do carro: ");
     fgets(g_carros[g_qtdCarros].placa, 10, stdin);
     g_carros[g_qtdCarros].placa[strlen(g_carros[g_qtdCarros].placa) - 1] = '\0';
-
 
     printf("Digite a kilometragem do carro: ");
     scanf("%f", &g_carros[g_qtdCarros].kilometragem);
@@ -177,7 +206,8 @@ int contemSomenteLetras(char text[50])
 
     int tam = strlen(text);
     int i = 0;
-    for (i = 0; i < tam; i++) {
+    for (i = 0; i < tam; i++)
+    {
         if ((65 <= text[i] && text[i] <= 90) || (97 <= text[i] && text[i] <= 122))
         {
             continue;
@@ -265,17 +295,17 @@ int validarData(Data dt)
     return 1; // Retornar verdadeiro(1) pois a data é Valida
 }
 
-Cliente VincularCliente(char nomeCliente[50])
+int VincularCliente(char nomeCliente[50])
 {
-
-    int i = 0;
-    for (i = 0; i < g_qtdClientes; i++)
+    int pos = 0;
+    for (pos = 0; pos < g_qtdClientes; pos++)
     {
-        if (strcmp(nomeCliente, g_clientes[i].nome) == 0)
+        if (strcmp(nomeCliente, g_clientes[pos].nome) == 0)
         {
-            return g_clientes[i];
+            return pos; // -- Retorna a possição do Cliente
         }
     }
+    return (-1); // -- Cliente não encontrado
 }
 
 int anoBissexto(int ano)
@@ -283,4 +313,141 @@ int anoBissexto(int ano)
     /* Testa se é divisivel por 4, e ao mesmo tempo, se é divisivel por 400 ou Não é divisivel por 100 */
     return (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));
     /* Retorna -- (1) Verdadeiro -- (0) Falso */
+}
+
+void buscarClientePeloNome(char nome[50]) {
+    int cli_pos = 0;
+    for (cli_pos = 0; cli_pos < g_qtdClientes; cli_pos++) {
+        if (strcmp(nome, g_clientes[cli_pos].nome) == 0)
+        {
+            printf("Nome: %s\n", g_clientes[cli_pos].nome);
+            printf("Telefone: %s\n", g_clientes[cli_pos].telefone);
+            break;
+        }
+    }
+
+    int car_pos = 0;
+    for (car_pos = 0; car_pos < g_qtdCarros; car_pos++) {
+        if (strcmp(nome, g_carros[car_pos].cliente.nome) == 0)
+        {
+            printf("Modelo do carro: %s\n", g_carros[car_pos].modelo);
+            printf("Placa do carro: %s\n", g_carros[car_pos].placa);
+            printf("Ano do carro: %d\n", g_carros[car_pos].anoFabricacao);
+            printf("Kilometragem do carro: %.2f\n", g_carros[car_pos].kilometragem);
+        }
+    }
+}
+
+void buscarCarroPelaPlaca(char placa[15]) {
+    int car_pos = 0;
+    for (car_pos = 0; car_pos < g_qtdCarros; car_pos++) {
+        if (strcmp(placa, g_carros[car_pos].placa) == 0)
+        {
+            printf("Modelo do carro: %s\n", g_carros[car_pos].modelo);
+            printf("Placa do carro: %s\n", g_carros[car_pos].placa);
+            printf("Ano do carro: %d\n", g_carros[car_pos].anoFabricacao);
+            printf("Kilometragem do carro: %.2f\n", g_carros[car_pos].kilometragem);
+            printf("Dono do carro: %s", g_carros[car_pos].cliente.nome);
+            printf("Telefone do dono do carro: %s", g_carros[car_pos].cliente.telefone);
+            break;
+        }
+    }  
+}
+
+int kilometragemCarros(float km) {
+    int qtd = 0;
+    int i = 0;
+
+
+    for (i = 0; i < g_qtdCarros; i++)
+    {
+        if (g_carros[i].kilometragem > km)
+        {
+            qtd++;
+        }
+        
+    }
+
+
+    return qtd;
+}
+
+
+/*int buscarCarroPorCliente(char nomeCliente[50])
+{
+    int pos = 0;
+    for (pos = 0; pos < g_qtdCarros; pos++)
+    {
+        if ()
+        {
+            return pos; // -- Retorna a possição do Cliente
+        }
+    }
+    return (-1); // -- Cliente não encontrado
+}*/
+
+
+void bancoDeDados(void){
+
+    strcpy(g_clientes[0].nome, "ronaldo");
+    strcpy(g_clientes[0].telefone, "09090909090");
+
+    strcpy(g_clientes[1].nome, "eduardo");
+    strcpy(g_clientes[1].telefone, "018981101017");
+
+    strcpy(g_clientes[2].nome, "gustavo");
+    strcpy(g_clientes[2].telefone, "018991434719");
+
+    g_carros[0].cliente = g_clientes[0];
+    strcpy(g_carros[0].modelo, "Onix");
+    strcpy(g_carros[0].placa, "ONX90");
+    g_carros[0].anoFabricacao = 2019;
+    g_carros[0].kilometragem = 10000;
+
+    g_carros[1].cliente = g_clientes[2];
+    strcpy(g_carros[1].modelo, "Opala");
+    strcpy(g_carros[1].placa, "OPL40");
+    g_carros[1].anoFabricacao = 1974;
+    g_carros[1].kilometragem = 10000;
+}
+
+void agruparPorAno() {
+    int i = 0;
+    int j = 0;
+    int ano = 0;
+
+    for (i = 0; i < g_qtdCarros; i++)
+    {   
+        ano = g_carros[i].anoFabricacao;
+        printf("%d\n", ano);
+        /*for (j = i+1; i < g_qtdCarros; j++)
+        {
+            if (g_carros[j].anoFabricacao == g_carros[i].anoFabricacao)
+            {
+                
+            }
+            
+        }*/
+        
+    }
+    
+}
+
+void linha(void){
+    printf("----------------------------------------\n");
+}
+
+
+void menu(void){
+    printf("=====================================\n");
+    printf("           MENU DE OPCOES            \n");
+    printf("=====================================\n");
+    printf("1 - Cadastrar Cliente\n");
+    printf("2 - Cadastrar Carro\n");
+    printf("3 - Buscar Cliente pelo Nome\n");
+    printf("4 - Buscar Carro pela Placa\n");
+    printf("5 - Contar Carros com Kilometragem Acima de um Valor\n");
+    printf("0 - Sair\n");
+    printf("=====================================\n");
+    printf("Escolha uma opcao: ");
 }
