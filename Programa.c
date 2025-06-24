@@ -54,6 +54,7 @@ int contemSomenteNumeros(char text[15]);
 int validarAnoFabricacao(int ano);
 int validarData(Data dt);
 int anoBissexto(int ano);
+Cliente VincularCliente(char nomeCliente[50]);
 
 /**********************************************
         Declaração das variaveis Globais
@@ -72,6 +73,7 @@ int main()
 {
 
     cadastrarCliente();
+    cadastrarCarro();
 
     return 0;
 }
@@ -92,7 +94,7 @@ void cadastrarCliente(void)
         validar = validarNome(g_clientes[g_qtdClientes].nome);
         if (!validar)
         {
-            printf(">>>Nome Invalido<<<");
+            printf(">>>Nome Invalido<<<\n");
         }
 
     } while (!validar);
@@ -106,7 +108,7 @@ void cadastrarCliente(void)
         validar = validarTelefone(g_clientes[g_qtdClientes].telefone);
         if (!validar)
         {
-            printf(">>>Telefone Invalido<<<");
+            printf(">>>Telefone Invalido<<<\n");
         }
 
     } while (!validar);
@@ -117,7 +119,12 @@ void cadastrarCliente(void)
 void cadastrarCarro(void)
 {
     int validar = 0;
+    char nome[50];
 
+    printf("Digite o nome do cliente: ");
+    fgets(nome, 50, stdin);
+    nome[strlen(nome) - 1] = '\0';
+    g_carros[g_qtdCarros].cliente = VincularCliente(nome);
 
 
     printf("Digite o modelo do carro: ");
@@ -127,11 +134,9 @@ void cadastrarCarro(void)
     printf("Digite a placa do carro: ");
     fgets(g_carros[g_qtdCarros].placa, 10, stdin);
     g_carros[g_qtdCarros].placa[strlen(g_carros[g_qtdCarros].placa) - 1] = '\0';
-    
-    
+
     printf("Digite a kilometragem do carro: ");
     scanf("%f", &g_carros[g_qtdCarros].kilometragem);
-
 
     do // Loop. Recebe o ano e checa se é Válido
     {
@@ -146,8 +151,7 @@ void cadastrarCarro(void)
 
     } while (!validar);
 
-
-    g_qtdClientes++; // (+ 1) toda vez que um cliente é cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
+    g_qtdCarros++; // (+ 1) toda vez que um carro é cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
 }
 int validarNome(char nome[50])
 { // (1) Verdadeiro -- (0) Falso
@@ -165,9 +169,8 @@ int contemSomenteLetras(char text[50])
 { // (1) Verdadeiro -- (0) Falso
 
     int tam = strlen(text);
-
-    for (int i = 0; i < tam; i++)
-    {
+    int i = 0;
+    for (i = 0; i < tam; i++) {
         if ((65 <= text[i] && text[i] <= 90) || (97 <= text[i] && text[i] <= 122))
         {
             continue;
@@ -182,7 +185,7 @@ int contemSomenteLetras(char text[50])
 
 int validarTelefone(char telefone[15])
 { // (1) Verdadeiro -- (0) Falso
-    if (telefone[0] == '0' && (strlen(telefone) == 11 || strlen(telefone) == 12) && isTotallyNum(telefone))
+    if (telefone[0] == '0' && (strlen(telefone) == 11 || strlen(telefone) == 12) && contemSomenteNumeros(telefone))
     {
         return 1; // -- Telefone Válido
     }
@@ -196,8 +199,8 @@ int contemSomenteNumeros(char text[15])
 {
 
     int tam = strlen(text);
-
-    for (int i = 0; i < tam; i++)
+    int i = 0;
+    for (i = 0; i < tam; i++)
     {
         if (48 <= text[i] && text[i] <= 57)
         {
@@ -211,14 +214,14 @@ int contemSomenteNumeros(char text[15])
     return 1; // -- Somente Números
 }
 
-int validarAnoFabricacao(int ano) {
+int validarAnoFabricacao(int ano)
+{
     if (ano > 2025)
     {
         return 0;
     }
 
     return 1;
-    
 }
 
 int validarData(Data dt)
@@ -253,6 +256,21 @@ int validarData(Data dt)
     }
 
     return 1; // Retornar verdadeiro(1) pois a data é Valida
+}
+
+Cliente VincularCliente(char nomeCliente[50])
+{
+    fgets(nomeCliente, 50, stdin);
+    nomeCliente[strlen(nomeCliente) - 1] = '\0';
+
+    int i = 0;
+    for (i = 0; i < g_qtdClientes; i++)
+    {
+        if (strcmp(nomeCliente, g_clientes[i].nome) == 0)
+        {
+            return g_clientes[i];
+        }
+    }
 }
 
 int anoBissexto(int ano)
