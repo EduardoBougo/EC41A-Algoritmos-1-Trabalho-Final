@@ -74,6 +74,12 @@ int main()
 
     cadastrarCliente();
     cadastrarCarro();
+    cadastrarCarro();
+
+    int i = 0;
+    for(i = 0; i < g_qtdCarros; i++) {
+        printf("%s\n", g_carros[i].cliente.nome);
+    }
 
     return 0;
 }
@@ -126,7 +132,6 @@ void cadastrarCarro(void)
     nome[strlen(nome) - 1] = '\0';
     g_carros[g_qtdCarros].cliente = VincularCliente(nome);
 
-
     printf("Digite o modelo do carro: ");
     fgets(g_carros[g_qtdCarros].modelo, 50, stdin);
     g_carros[g_qtdCarros].modelo[strlen(g_carros[g_qtdCarros].modelo) - 1] = '\0';
@@ -135,6 +140,7 @@ void cadastrarCarro(void)
     fgets(g_carros[g_qtdCarros].placa, 10, stdin);
     g_carros[g_qtdCarros].placa[strlen(g_carros[g_qtdCarros].placa) - 1] = '\0';
 
+
     printf("Digite a kilometragem do carro: ");
     scanf("%f", &g_carros[g_qtdCarros].kilometragem);
 
@@ -142,6 +148,7 @@ void cadastrarCarro(void)
     {
         printf("Digite o ano de fabricacao do carro: ");
         scanf("%d", &g_carros[g_qtdCarros].anoFabricacao);
+        getchar();
 
         validar = validarAnoFabricacao(g_carros[g_qtdCarros].anoFabricacao);
         if (!validar)
@@ -260,8 +267,6 @@ int validarData(Data dt)
 
 Cliente VincularCliente(char nomeCliente[50])
 {
-    fgets(nomeCliente, 50, stdin);
-    nomeCliente[strlen(nomeCliente) - 1] = '\0';
 
     int i = 0;
     for (i = 0; i < g_qtdClientes; i++)
