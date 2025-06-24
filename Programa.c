@@ -450,4 +450,32 @@ void menu(void){
     printf("0 - Sair\n");
     printf("=====================================\n");
     printf("Escolha uma opcao: ");
+    /*
+        printf(" |-------------------------------------------------|\n");
+    printf(" |                MENU DE OPCOES                   |\n");
+    printf(" |-------------------------------------------------|\n");
+    printf(" | 1 - Cadastrar Cliente                           |\n");
+    printf(" | 2 - Cadastrar Carro                             |\n");
+    printf(" | 3 - Buscar Cliente pelo Nome                    |\n");
+    printf(" | 4 - Buscar Carro pela Placa                     |\n");
+    printf(" | 5 - Quantidade de Carros com Kilometragem Acima |\n");
+    printf(" | 0 - Sair                                        |\n");
+    printf(" |=================================================|\n");
+    printf("Escolha uma opcao: ");
+    
+    printf("\n\n\n\n");
+    printf("=====================================\n");
+    printf("           MENU DE OPCOES            \n");
+    printf("=====================================\n");
+    printf("1 - Cadastrar Cliente\n");
+    printf("2 - Cadastrar Carro\n");
+    printf("3 - Buscar Cliente pelo Nome\n");
+    printf("4 - Buscar Carro pela Placa\n");
+    printf("5 - Contar Carros com Kilometragem Acima de um Valor\n");
+    printf("0 - Sair\n");
+    printf("=====================================\n");
+    printf("Escolha uma opcao: ");
+    
+    
+    */
 }
