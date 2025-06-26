@@ -53,14 +53,17 @@ int contemSomenteNumeros(char text[15]);
 
 int validarAnoFabricacao(int ano);
 int validarData(Data dt);
+int validarDataAnterior(Data dt);
 int anoBissexto(int ano);
 int VincularCliente(char nomeCliente[50]);
+int VincularCarro(char modeloCarro[50], char placaCarro[15]);
 void buscarClientePeloNome(char nome[50]);
 void buscarCarroPelaPlaca(char placa[15]);
 int kilometragemCarros(float km);
 
 void bancoDeDados(void);
 void agruparPorAno(void);
+void agendarServico(void);
 void linha(void);
 
 /**********************************************
@@ -69,8 +72,11 @@ void linha(void);
 
 int g_qtdClientes = 3;
 int g_qtdCarros = 3;
+int g_qtdServicos = 0;
+int g_id = 1;
 Cliente g_clientes[10];
 Carro g_carros[10];
+Servico g_servicos[10];
 
 
 
@@ -85,7 +91,9 @@ int main()
     int quantidade = kilometragemCarros(5000);
     printf("Quantidade de carros que tem mais de 5000 km: %d\n", quantidade);
 
-    agruparPorAno();
+    //agruparPorAno();
+
+    agendarServico();
 
     /*linha();
     cadastrarCliente();
@@ -287,7 +295,7 @@ int validarData(Data dt)
         return 0;
     }
 
-    if (dt.ano > 2025 || (dt.ano == 2025 && dt.dia > 23) || (dt.ano == 2025 && dt.mes > 6))
+    if (dt.ano > 2025 || (dt.ano == 2025 && dt.dia > 30) || (dt.ano == 2025 && dt.mes > 6))
     { // Testando se é posterior que a data de hoje
         return 0;
     }
@@ -295,6 +303,34 @@ int validarData(Data dt)
     return 1; // Retornar verdadeiro(1) pois a data é Valida
 }
 
+int validarDataAnterior(Data dt)
+{
+    int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
+
+    if ((dt.mes == 2) && anoBissexto(dt.ano))
+    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mes
+        diasNoMes = 29;
+    }
+
+    if ((dt.dia < 1) || (dt.dia > diasNoMes))
+    { // Testando se o dia é Valido
+        return 0;
+    }
+
+    if ((dt.mes < 1) || (dt.mes > 12))
+    { // Testando se o mês é Valido
+        return 0;
+    }
+
+     if (dt.ano < 2025 || (dt.ano == 2025 && dt.mes < 6) || (dt.ano == 2025 && dt.mes == 6 && dt.dia < 30))
+    { // Testando se é anterior que a data de hoje
+        return 0;
+    }
+
+    return 1; // Retornar verdadeiro(1) pois a data é Valida
+}
 int VincularCliente(char nomeCliente[50])
 {
     int pos = 0;
@@ -302,10 +338,23 @@ int VincularCliente(char nomeCliente[50])
     {
         if (strcmp(nomeCliente, g_clientes[pos].nome) == 0)
         {
-            return pos; // -- Retorna a possição do Cliente
+            return pos; // -- Retorna a posição do Cliente
         }
     }
     return (-1); // -- Cliente não encontrado
+}
+
+int VincularCarro(char modeloCarro[50], char placaCarro[15])
+{
+    int pos = 0;
+    for (pos = 0; pos < g_qtdCarros; pos++)
+    {
+        if (strcmp(modeloCarro, g_carros[pos].modelo) == 0 && strcmp(placaCarro, g_carros[pos].placa) == 0)
+        {
+            return pos; // -- Retorna a posição do Carro
+        }
+    }
+    return (-1); // -- Carro não encontrado
 }
 
 int anoBissexto(int ano)
@@ -448,9 +497,80 @@ void agruparPorAno() {
         printf("Telefone do Dono: %s\n", g_carros[i].cliente.telefone);
         linha();
     }
-    
-    
 }
+
+
+void agendarServico() {
+    int validar = 0;
+    int tipo = 0;
+    char modelo[50];
+    char placa[15];
+    Data tempData;
+    
+    do
+    {
+        printf("Digite o modelo do carro que deseja agendar o serviço: ");
+        fgets(modelo, 50, stdin);
+        modelo[strlen(modelo) - 1] = '\0';
+        printf("Digite a placa do carro: ");
+        fgets(placa, 15, stdin);
+        placa[strlen(placa) - 1] = '\0';
+        
+        validar = VincularCarro(modelo, placa);
+        if(validar == -1) {
+            printf("Carro nao encontrado.\n");
+        }
+    } while (validar == -1);
+    
+    g_servicos[g_qtdServicos].carro = g_carros[VincularCarro(modelo, placa)];
+    linha();
+
+    do
+    {
+        printf("Digite o dia do servico: ");
+        scanf("%d", &tempData.dia);
+        printf("Digite o mes do servico: ");
+        scanf("%d", &tempData.mes);
+        printf("Digite o ano do servico: ");
+        scanf("%d", &tempData.ano);
+
+        if (!validarDataAnterior(tempData))
+        {
+            printf("Data invalida\n");
+        }
+        
+    } while (!validarDataAnterior(tempData));
+    
+    g_servicos[g_qtdServicos].dataDoServico = tempData;
+    linha();
+
+    do
+    {
+        printf("Digite o tipo de servico que deseja fazer:\n");
+        printf("1 - Revisao basica - R$750.00\n");
+        printf("2 - Troca de oleo - R$190.00\n");
+        printf("3 - Alinhamento e balanceamento - R$120.00\n");
+        printf("4 - Higienizacao - R$90.00\n");
+        scanf("%d", &tipo);
+
+        if (tipo != 1 && tipo != 2 && tipo != 3 && tipo != 4)
+        {
+            printf("Tipo invalido.\n");
+        }
+        
+    } while (tipo != 1 && tipo != 2 && tipo != 3 && tipo != 4);
+    
+    g_servicos[g_qtdServicos].tipoDeServico = tipo;
+
+    g_servicos[g_qtdServicos].pago = 'N';
+
+    g_servicos[g_qtdServicos].identificador = g_id;
+    g_id++;
+
+    printf("Servico agendado!\n");
+    linha();
+}
+
 
 void linha(void){
     printf("----------------------------------------\n");
