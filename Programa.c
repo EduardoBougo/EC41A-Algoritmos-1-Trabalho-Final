@@ -68,7 +68,7 @@ void linha(void);
 **********************************************/
 
 int g_qtdClientes = 3;
-int g_qtdCarros = 2;
+int g_qtdCarros = 3;
 Cliente g_clientes[10];
 Carro g_carros[10];
 
@@ -409,27 +409,46 @@ void bancoDeDados(void){
     strcpy(g_carros[1].placa, "OPL40");
     g_carros[1].anoFabricacao = 1974;
     g_carros[1].kilometragem = 10000;
+    
+    g_carros[2].cliente = g_clientes[1];
+    strcpy(g_carros[2].modelo, "Opala2");
+    strcpy(g_carros[2].placa, "OPA40");
+    g_carros[2].anoFabricacao = 2019;
+    g_carros[2].kilometragem = 10000;
 }
 
 void agruparPorAno() {
     int i = 0;
     int j = 0;
-    int ano = 0;
 
-    for (i = 0; i < g_qtdCarros; i++)
-    {   
-        ano = g_carros[i].anoFabricacao;
-        printf("%d\n", ano);
-        /*for (j = i+1; i < g_qtdCarros; j++)
-        {
-            if (g_carros[j].anoFabricacao == g_carros[i].anoFabricacao)
-            {
-                
+    for (int i = 0; i < g_qtdCarros; i++) {
+        for (j = i+1; j < g_qtdCarros; j++) {
+            if (g_carros[i].anoFabricacao > g_carros[j].anoFabricacao) {
+                //Trocar os carros, ordenando por ano de fabricação
+                Carro temp = g_carros[i];
+                g_carros[i] = g_carros[j];
+                g_carros[j] = temp;
             }
-            
-        }*/
-        
+        }
     }
+
+    int anoAtual = 0;
+    for (i = 0; i < g_qtdCarros; i++) {
+        //Se o ano de fabricação não for igual ao da variável anoAtual, essa variável irá receber outro ano.
+        if (g_carros[i].anoFabricacao != anoAtual) {
+            printf("%d\n", g_carros[i].anoFabricacao);
+            anoAtual = g_carros[i].anoFabricacao;
+        }
+
+        
+        printf("Modelo: %s\n", g_carros[i].modelo);
+        printf("Placa: %s\n", g_carros[i].placa);
+        printf("Kilometragem: %.2f\n", g_carros[i].kilometragem);
+        printf("Dono: %s\n", g_carros[i].cliente.nome);
+        printf("Telefone do Dono: %s\n", g_carros[i].cliente.telefone);
+        linha();
+    }
+    
     
 }
 
