@@ -42,6 +42,8 @@ typedef struct
 /**********************************************
             Declaração das funções
 **********************************************/
+void menu(void);
+void menuInterno(void);
 
 void cadastrarCliente(void);
 void cadastrarCarro(void);
@@ -69,6 +71,9 @@ void agendarServico(void);
 
 void bancoDeDados(void);
 void linha(void);
+void enterParaContinuar(void);
+
+void limparTela(void);
 
 /**********************************************
         Declaração das variaveis Globais
@@ -106,13 +111,9 @@ int main()
 
     bancoDeDados();
     menu();
-    
-    int quantidade = kilometragemCarros(5000);
-    printf("Quantidade de carros que tem mais de 5000 km: %d\n", quantidade);
 
     //agruparPorAno();
 
-    agendarServico();
 
     /*linha();
     cadastrarCliente();
@@ -135,20 +136,8 @@ int main()
 /**********************************************
                     Funções
 **********************************************/
-
-void menu(void){
-    printf("=====================================\n");
-    printf("           MENU DE OPCOES            \n");
-    printf("=====================================\n");
-    printf("1 - Cadastrar Cliente\n");
-    printf("2 - Cadastrar Carro\n");
-    printf("3 - Buscar Cliente pelo Nome\n");
-    printf("4 - Buscar Carro pela Placa\n");
-    printf("5 - Contar Carros com Kilometragem Acima de um Valor\n");
-    printf("0 - Sair\n");
-    printf("=====================================\n");
-    printf("Escolha uma opcao: ");
-    
+void menuInterno(void){
+    limparTela();
 
     printf(" |-------------------------------------------------|\n");
     printf(" |                MENU DE OPCOES                   |\n");
@@ -158,24 +147,112 @@ void menu(void){
     printf(" | 3 - Buscar Cliente pelo Nome                    |\n");
     printf(" | 4 - Buscar Carro pela Placa                     |\n");
     printf(" | 5 - Quantidade de Carros com Kilometragem Acima |\n");
+    printf(" | 6 - Agendar serviço                             |\n");
+    printf(" | 7 - Mostrar o serviço mais solicitado (quebrada)|\n");
     printf(" | 0 - Sair                                        |\n");
-    printf(" |=================================================|\n");
+    printf(" |-------------------------------------------------|\n");
+    printf(" Escolha uma opcao: ");
+}
 
-    printf("Escolha uma opcao: ");
+void menu(void){
+    int op = 0;
+    float kilometragem = 0;
+    char nome[50],
+         placa[10];
+
+    do
+    {
+        menuInterno();
+        scanf("%d", &op);
+        getchar();
+
+        switch (op)
+        {
+        case 1:
+            limparTela();
+            printf(" |-------------------------------------------------|\n");
+            printf(" |             CADASTRAR NOVO CLIENTE              |\n");
+            printf(" |-------------------------------------------------|\n");
+            printf("\n\n");
+
+            cadastrarCliente();
+
+            break;
+        
+        case 2:
+            limparTela();
+            printf(" |-------------------------------------------------|\n");
+            printf(" |              CADASTRAR NOVO CARRO               |\n");
+            printf(" |-------------------------------------------------|\n");
+            printf("\n\n");
+
+            cadastrarCarro();
+
+            break;
+
+        case 3:
+            limparTela();
+            printf(" |-------------------------------------------------|\n");
+            printf(" |           BUSCAR CLIENTE PELO NOME              |\n");
+            printf(" |-------------------------------------------------|\n");
+            printf("\n\n");
+            printf("NOME: ");
+
+            fgets(nome, 50, stdin);
+            nome[strlen(nome) - 1] = '\0';
+            buscarClientePeloNome(nome);
+
+            enterParaContinuar();
+            break;
+        
+        case 4:
+            limparTela();
+            printf(" |-------------------------------------------------|\n");
+            printf(" |            BUSCAR CARRO PELA PLACA              |\n");
+            printf(" |-------------------------------------------------|\n");
+            printf("\n\n");
+            printf("PLACA: ");
+
+            fgets(placa, 50, stdin);
+            placa[strlen(placa) - 1] = '\0';
+            buscarCarroPelaPlaca(placa);
+
+            enterParaContinuar();
+            break;
+
+        case 5:
+            limparTela();
+            printf(" |-------------------------------------------------|\n");
+            printf(" |  QUANTIDADE DE CARROS COM A KILOMETRAGEM ACIMA  |\n");
+            printf(" |-------------------------------------------------|\n");
+            printf("\n\n");
+            printf("KILOMETRAGEM: ");
+
+            scanf("%f", &kilometragem);
+
+            printf("\nExistem %d carros com kilometragem acima de %.2f cadastrados no sistema.\n", kilometragemCarros(kilometragem), kilometragem);
+            getchar();
+
+            enterParaContinuar();
+            break;
+        
+        case 6:
+            limparTela();
+            printf(" |-------------------------------------------------|\n");
+            printf(" |                AGENDAR SERVIÇOS                 |\n");
+            printf(" |-------------------------------------------------|\n");
+            agendarServico();
+            getchar();
+
+            enterParaContinuar();
+
+        default:
+            limparTela();
+            break;
+        }
+    } while (op != 0);
     
-    printf("\n\n\n\n");
-    printf("=====================================\n");
-    printf("           MENU DE OPCOES            \n");
-    printf("=====================================\n");
-    printf("1 - Cadastrar Cliente\n");
-    printf("2 - Cadastrar Carro\n");
-    printf("3 - Buscar Cliente pelo Nome\n");
-    printf("4 - Buscar Carro pela Placa\n");
-    printf("5 - Contar Carros com Kilometragem Acima de um Valor\n");
-    printf("0 - Sair\n");
-    printf("=====================================\n");
-    printf("Escolha uma opcao: ");
-    
+
 }
 
 void cadastrarCliente(void)
@@ -426,6 +503,7 @@ int anoBissexto(int ano)
 }
 
 void buscarClientePeloNome(char nome[50]) {
+    
     int cli_pos = 0;
     for (cli_pos = 0; cli_pos < g_qtdClientes; cli_pos++) {
         if (strcmp(nome, g_clientes[cli_pos].nome) == 0)
@@ -457,8 +535,8 @@ void buscarCarroPelaPlaca(char placa[15]) {
             printf("Placa do carro: %s\n", g_carros[car_pos].placa);
             printf("Ano do carro: %d\n", g_carros[car_pos].anoFabricacao);
             printf("Kilometragem do carro: %.2f\n", g_carros[car_pos].kilometragem);
-            printf("Dono do carro: %s", g_carros[car_pos].cliente.nome);
-            printf("Telefone do dono do carro: %s", g_carros[car_pos].cliente.telefone);
+            printf("Dono do carro: %s\n", g_carros[car_pos].cliente.nome);
+            printf("Telefone do dono do carro: %s\n", g_carros[car_pos].cliente.telefone);
             break;
         }
     }  
@@ -513,7 +591,7 @@ void agruparPorAno() {
 }
 
 
-void agendarServico() {
+void agendarServico(void) {
     int validar = 0;
     int tipo = 0;
     char modelo[50];
@@ -629,4 +707,20 @@ void bancoDeDados(void){
     g_qtdClientes += 3; 
     g_qtdCarros += 3;
 }
+
+void enterParaContinuar(void){
+    printf("\n>>> Precione a tecla Enter para continuar <<<\n");
+    getchar();
+
+
+}
+
+void limparTela(void) {
+  #ifdef _WIN32
+    system("cls");
+  #else
+    system("clear");
+  #endif
+}
+
 /************************************************************************************/
