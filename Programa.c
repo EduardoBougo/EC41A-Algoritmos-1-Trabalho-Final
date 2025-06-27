@@ -64,6 +64,7 @@ int kilometragemCarros(float km);
 void bancoDeDados(void);
 void agruparPorAno(void);
 void valoresPendentes(void);
+void servicoMaisUsado(void);
 void agendarServico(void);
 void linha(void);
 
@@ -96,7 +97,9 @@ int main()
     agendarServico();
     agendarServico();
 
-    valoresPendentes();
+    servicoMaisUsado();
+
+    //valoresPendentes();
 
     /*linha();
     cadastrarCliente();
@@ -553,6 +556,54 @@ void valoresPendentes()
         }
         
         linha();
+    }
+}
+
+void servicoMaisUsado() {
+    int i = 0;
+    int j = 0;
+    int num = 0;
+    int vezes = 0;
+    int maior = 0;
+
+    for (i = 0; i < g_qtdServicos; i++)
+    {
+        vezes = 0;
+        for (j = i+1; j < g_qtdServicos; j++)
+        {
+            if (g_servicos[i].tipoDeServico == g_servicos[j].tipoDeServico)
+            {
+                vezes++;
+            }
+            
+        }
+        
+        if (vezes > maior)
+        {
+            maior = vezes;
+            num = g_servicos[i].tipoDeServico;
+        }
+        
+    }
+    
+    printf("Servico mais pedido: ");
+
+    switch (num)
+    {
+        case 1:
+            printf("Revisao basica");
+            break;
+        case 2:
+            printf("Troca de oleo");
+            break;
+        case 3:
+            printf("Alinhamento e balanceamento");
+            break;
+        case 4:
+            printf("Higienizacao");
+            break;
+        default:
+            break;
     }
 }
 
