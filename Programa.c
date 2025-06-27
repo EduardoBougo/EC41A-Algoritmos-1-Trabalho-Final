@@ -63,6 +63,7 @@ int kilometragemCarros(float km);
 
 void bancoDeDados(void);
 void agruparPorAno(void);
+void valoresPendentes(void);
 void agendarServico(void);
 void linha(void);
 
@@ -78,8 +79,6 @@ Cliente g_clientes[10];
 Carro g_carros[10];
 Servico g_servicos[10];
 
-
-
 /**********************************************
                     Int main()
 **********************************************/
@@ -87,13 +86,17 @@ Servico g_servicos[10];
 int main()
 {
     bancoDeDados();
-    
+
     int quantidade = kilometragemCarros(5000);
     printf("Quantidade de carros que tem mais de 5000 km: %d\n", quantidade);
 
-    //agruparPorAno();
+    // agruparPorAno();
 
     agendarServico();
+    agendarServico();
+    agendarServico();
+
+    valoresPendentes();
 
     /*linha();
     cadastrarCliente();
@@ -108,7 +111,6 @@ int main()
     buscarClientePeloNome("ronaldo");
     buscarCarroPelaPlaca("opa123");
     linha();*/
-
 
     return 0;
 }
@@ -163,13 +165,14 @@ void cadastrarCarro(void)
         nome[strlen(nome) - 1] = '\0';
 
         validar = VincularCliente(nome);
-        if(validar == (-1)) {
+        if (validar == (-1))
+        {
             printf("Cliente nao existe\n");
         }
     } while (validar == (-1));
 
     g_carros[g_qtdCarros].cliente = g_clientes[VincularCliente(nome)];
-    
+
     printf("Digite o modelo do carro: ");
     fgets(g_carros[g_qtdCarros].modelo, 50, stdin);
     g_carros[g_qtdCarros].modelo[strlen(g_carros[g_qtdCarros].modelo) - 1] = '\0';
@@ -324,7 +327,7 @@ int validarDataAnterior(Data dt)
         return 0;
     }
 
-     if (dt.ano < 2025 || (dt.ano == 2025 && dt.mes < 6) || (dt.ano == 2025 && dt.mes == 6 && dt.dia < 30))
+    if (dt.ano < 2025 || (dt.ano == 2025 && dt.mes < 6) || (dt.ano == 2025 && dt.mes == 6 && dt.dia < 30))
     { // Testando se é anterior que a data de hoje
         return 0;
     }
@@ -364,9 +367,11 @@ int anoBissexto(int ano)
     /* Retorna -- (1) Verdadeiro -- (0) Falso */
 }
 
-void buscarClientePeloNome(char nome[50]) {
+void buscarClientePeloNome(char nome[50])
+{
     int cli_pos = 0;
-    for (cli_pos = 0; cli_pos < g_qtdClientes; cli_pos++) {
+    for (cli_pos = 0; cli_pos < g_qtdClientes; cli_pos++)
+    {
         if (strcmp(nome, g_clientes[cli_pos].nome) == 0)
         {
             printf("Nome: %s\n", g_clientes[cli_pos].nome);
@@ -376,7 +381,8 @@ void buscarClientePeloNome(char nome[50]) {
     }
 
     int car_pos = 0;
-    for (car_pos = 0; car_pos < g_qtdCarros; car_pos++) {
+    for (car_pos = 0; car_pos < g_qtdCarros; car_pos++)
+    {
         if (strcmp(nome, g_carros[car_pos].cliente.nome) == 0)
         {
             printf("Modelo do carro: %s\n", g_carros[car_pos].modelo);
@@ -387,9 +393,11 @@ void buscarClientePeloNome(char nome[50]) {
     }
 }
 
-void buscarCarroPelaPlaca(char placa[15]) {
+void buscarCarroPelaPlaca(char placa[15])
+{
     int car_pos = 0;
-    for (car_pos = 0; car_pos < g_qtdCarros; car_pos++) {
+    for (car_pos = 0; car_pos < g_qtdCarros; car_pos++)
+    {
         if (strcmp(placa, g_carros[car_pos].placa) == 0)
         {
             printf("Modelo do carro: %s\n", g_carros[car_pos].modelo);
@@ -400,13 +408,13 @@ void buscarCarroPelaPlaca(char placa[15]) {
             printf("Telefone do dono do carro: %s", g_carros[car_pos].cliente.telefone);
             break;
         }
-    }  
+    }
 }
 
-int kilometragemCarros(float km) {
+int kilometragemCarros(float km)
+{
     int qtd = 0;
     int i = 0;
-
 
     for (i = 0; i < g_qtdCarros; i++)
     {
@@ -414,13 +422,10 @@ int kilometragemCarros(float km) {
         {
             qtd++;
         }
-        
     }
-
 
     return qtd;
 }
-
 
 /*int buscarCarroPorCliente(char nomeCliente[50])
 {
@@ -435,8 +440,8 @@ int kilometragemCarros(float km) {
     return (-1); // -- Cliente não encontrado
 }*/
 
-
-void bancoDeDados(void){
+void bancoDeDados(void)
+{
 
     strcpy(g_clientes[0].nome, "ronaldo");
     strcpy(g_clientes[0].telefone, "09090909090");
@@ -458,7 +463,7 @@ void bancoDeDados(void){
     strcpy(g_carros[1].placa, "OPL40");
     g_carros[1].anoFabricacao = 1974;
     g_carros[1].kilometragem = 10000;
-    
+
     g_carros[2].cliente = g_clientes[1];
     strcpy(g_carros[2].modelo, "Opala2");
     strcpy(g_carros[2].placa, "OPA40");
@@ -466,14 +471,18 @@ void bancoDeDados(void){
     g_carros[2].kilometragem = 10000;
 }
 
-void agruparPorAno() {
+void agruparPorAno()
+{
     int i = 0;
     int j = 0;
 
-    for (int i = 0; i < g_qtdCarros; i++) {
-        for (j = i+1; j < g_qtdCarros; j++) {
-            if (g_carros[i].anoFabricacao > g_carros[j].anoFabricacao) {
-                //Trocar os carros, ordenando por ano de fabricação
+    for (int i = 0; i < g_qtdCarros; i++)
+    {
+        for (j = i + 1; j < g_qtdCarros; j++)
+        {
+            if (g_carros[i].anoFabricacao > g_carros[j].anoFabricacao)
+            {
+                // Trocar os carros, ordenando por ano de fabricação
                 Carro temp = g_carros[i];
                 g_carros[i] = g_carros[j];
                 g_carros[j] = temp;
@@ -482,14 +491,15 @@ void agruparPorAno() {
     }
 
     int anoAtual = 0;
-    for (i = 0; i < g_qtdCarros; i++) {
-        //Se o ano de fabricação não for igual ao da variável anoAtual, essa variável irá receber outro ano.
-        if (g_carros[i].anoFabricacao != anoAtual) {
+    for (i = 0; i < g_qtdCarros; i++)
+    {
+        // Se o ano de fabricação não for igual ao da variável anoAtual, essa variável irá receber outro ano.
+        if (g_carros[i].anoFabricacao != anoAtual)
+        {
             printf("%d\n", g_carros[i].anoFabricacao);
             anoAtual = g_carros[i].anoFabricacao;
         }
 
-        
         printf("Modelo: %s\n", g_carros[i].modelo);
         printf("Placa: %s\n", g_carros[i].placa);
         printf("Kilometragem: %.2f\n", g_carros[i].kilometragem);
@@ -499,14 +509,61 @@ void agruparPorAno() {
     }
 }
 
+void valoresPendentes()
+{
+    int i = 0;
+    int j = 0;
+    int encontrouServico = 0;
+    for (i = 0; i < g_qtdCarros; i++)
+    {
+        Carro carroAtual = g_carros[i];
+        printf("Carro: %s | Placa %s\n", carroAtual.modelo, carroAtual.placa);
+        encontrouServico = 0;
 
-void agendarServico() {
+        for (j = 0; j < g_qtdServicos; j++)
+        {
+            if (strcmp(carroAtual.placa, g_servicos[j].carro.placa) == 0)
+            {
+                encontrouServico = 1;
+                if (g_servicos[j].pago == 'N')
+                {
+                    int tipo = g_servicos[j].tipoDeServico; 
+                    switch(tipo) {
+                        case 1:
+                            printf("Servico de Resisao basica (750,0) - nao pago\n");
+                            break;
+                        case 2:
+                            printf("Servico de Troca de oleo (190,0) - nao pago\n");
+                            break;
+                        case 3:
+                            printf("Servico de Alinhamento e balanceamento (120,0) - nao pago\n");
+                            break;
+                        case 4:
+                            printf("Servico de Higienizacao (90,0) - nao pago\n");
+                            break;
+                    }
+                } 
+
+            }
+        }
+
+        if (!encontrouServico)
+        {
+            printf("Nao possui servico no momento.\n");
+        }
+        
+        linha();
+    }
+}
+
+void agendarServico()
+{
     int validar = 0;
     int tipo = 0;
     char modelo[50];
     char placa[15];
     Data tempData;
-    
+
     do
     {
         printf("Digite o modelo do carro que deseja agendar o serviço: ");
@@ -515,13 +572,14 @@ void agendarServico() {
         printf("Digite a placa do carro: ");
         fgets(placa, 15, stdin);
         placa[strlen(placa) - 1] = '\0';
-        
+
         validar = VincularCarro(modelo, placa);
-        if(validar == -1) {
+        if (validar == -1)
+        {
             printf("Carro nao encontrado.\n");
         }
     } while (validar == -1);
-    
+
     g_servicos[g_qtdServicos].carro = g_carros[VincularCarro(modelo, placa)];
     linha();
 
@@ -538,9 +596,9 @@ void agendarServico() {
         {
             printf("Data invalida\n");
         }
-        
+
     } while (!validarDataAnterior(tempData));
-    
+
     g_servicos[g_qtdServicos].dataDoServico = tempData;
     linha();
 
@@ -552,14 +610,15 @@ void agendarServico() {
         printf("3 - Alinhamento e balanceamento - R$120.00\n");
         printf("4 - Higienizacao - R$90.00\n");
         scanf("%d", &tipo);
+        getchar();
 
         if (tipo != 1 && tipo != 2 && tipo != 3 && tipo != 4)
         {
             printf("Tipo invalido.\n");
         }
-        
+
     } while (tipo != 1 && tipo != 2 && tipo != 3 && tipo != 4);
-    
+
     g_servicos[g_qtdServicos].tipoDeServico = tipo;
 
     g_servicos[g_qtdServicos].pago = 'N';
@@ -567,17 +626,19 @@ void agendarServico() {
     g_servicos[g_qtdServicos].identificador = g_id;
     g_id++;
 
+    g_qtdServicos++;
+
     printf("Servico agendado!\n");
     linha();
 }
 
-
-void linha(void){
+void linha(void)
+{
     printf("----------------------------------------\n");
 }
 
-
-void menu(void){
+void menu(void)
+{
     printf("=====================================\n");
     printf("           MENU DE OPCOES            \n");
     printf("=====================================\n");
@@ -601,7 +662,7 @@ void menu(void){
     printf(" | 0 - Sair                                        |\n");
     printf(" |=================================================|\n");
     printf("Escolha uma opcao: ");
-    
+
     printf("\n\n\n\n");
     printf("=====================================\n");
     printf("           MENU DE OPCOES            \n");
@@ -614,7 +675,7 @@ void menu(void){
     printf("0 - Sair\n");
     printf("=====================================\n");
     printf("Escolha uma opcao: ");
-    
-    
+
+
     */
 }
