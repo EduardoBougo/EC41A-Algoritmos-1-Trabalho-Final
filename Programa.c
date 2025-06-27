@@ -66,6 +66,7 @@ void agruparPorAno(void);
 void valoresPendentes(void);
 void servicoMaisUsado(void);
 void agendarServico(void);
+void promocaoAniversario(int dia, int mes);
 void linha(void);
 
 /**********************************************
@@ -92,6 +93,7 @@ int main()
     printf("Quantidade de carros que tem mais de 5000 km: %d\n", quantidade);
 
     // agruparPorAno();
+    promocaoAniversario(12, 2);
 
     agendarServico();
     agendarServico();
@@ -125,6 +127,7 @@ int main()
 void cadastrarCliente(void)
 {
     int validar = 0;
+    Data tempData;
     do // Loop. Recebe o nome e checa se é Válido
     {
         printf("Digite seu nome: ");
@@ -152,6 +155,24 @@ void cadastrarCliente(void)
         }
 
     } while (!validar);
+
+    do
+    {
+        printf("Digite o dia de seu nascimento: ");
+        scanf("%d", &tempData.dia);
+        printf("Digite o mes de seu nascimento: ");
+        scanf("%d", &tempData.mes);
+        printf("Digite o ano de seu nascimento: ");
+        scanf("%d", &tempData.ano);
+
+        if (!validarData(tempData))
+        {
+            printf("Data invalida\n");
+        }
+
+    } while (!validarData(tempData));
+
+    g_clientes[g_qtdClientes].aniversario = tempData;
 
     g_qtdClientes++; // (+ 1) toda vez que um cliente é cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
 }
@@ -448,10 +469,16 @@ void bancoDeDados(void)
 
     strcpy(g_clientes[0].nome, "ronaldo");
     strcpy(g_clientes[0].telefone, "09090909090");
-
+    g_clientes[0].aniversario.dia = 12;
+    g_clientes[0].aniversario.mes = 2;
+    g_clientes[0].aniversario.ano = 2005;
+    
     strcpy(g_clientes[1].nome, "eduardo");
     strcpy(g_clientes[1].telefone, "018981101017");
-
+    g_clientes[1].aniversario.dia = 20;
+    g_clientes[1].aniversario.mes = 2;
+    g_clientes[1].aniversario.ano = 2005;
+    
     strcpy(g_clientes[2].nome, "gustavo");
     strcpy(g_clientes[2].telefone, "018991434719");
 
@@ -681,6 +708,18 @@ void agendarServico()
 
     printf("Servico agendado!\n");
     linha();
+}
+
+void promocaoAniversario(int dia, int mes) {
+    int i = 0;
+    for (i = 0; i < g_qtdClientes; i++)
+    {
+        if (g_clientes[i].aniversario.mes == mes && (g_clientes[i].aniversario.dia >= dia && g_clientes[i].aniversario.dia <= (dia + 7)))
+        {
+            printf("O cliente %s foi selecionado para a promocao!\n", g_clientes[i].nome);
+        }
+        
+    }
 }
 
 void linha(void)
