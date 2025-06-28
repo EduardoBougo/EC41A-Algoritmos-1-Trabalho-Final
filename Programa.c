@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 /**********************************************
             Declaração das structs
@@ -63,6 +64,7 @@ int kilometragemCarros(float km);
 
 void bancoDeDados(void);
 void agruparPorAno(void);
+void agruparOrdemAlfabetica(void);
 void valoresPendentes(void);
 void servicoMaisUsado(void);
 void agendarServico(void);
@@ -95,11 +97,14 @@ int main()
     // agruparPorAno();
     promocaoAniversario(12, 2);
 
-    agendarServico();
+    //agruparOrdemAlfabetica();
+    
+
+    /*agendarServico();
     agendarServico();
     agendarServico();
 
-    servicoMaisUsado();
+    servicoMaisUsado();*/
 
     //valoresPendentes();
 
@@ -200,6 +205,7 @@ void cadastrarCarro(void)
     printf("Digite o modelo do carro: ");
     fgets(g_carros[g_qtdCarros].modelo, 50, stdin);
     g_carros[g_qtdCarros].modelo[strlen(g_carros[g_qtdCarros].modelo) - 1] = '\0';
+    g_carros[g_qtdCarros].modelo[0] = toupper(g_carros[g_qtdCarros].modelo[0]);
 
     printf("Digite a placa do carro: ");
     fgets(g_carros[g_qtdCarros].placa, 10, stdin);
@@ -536,6 +542,41 @@ void agruparPorAno()
         printf("Dono: %s\n", g_carros[i].cliente.nome);
         printf("Telefone do Dono: %s\n", g_carros[i].cliente.telefone);
         linha();
+    }
+}
+
+void agruparOrdemAlfabetica() { // Ordena e lista os carros por ordem alfabética dos modelos
+    int i = 0;
+    int j = 0;
+    Carro tempCarro;
+
+    for (i = 0; i < g_qtdCarros; i++)
+    {
+        for (j = i+1; j < g_qtdCarros; j++)
+        {
+            if (strcmp(g_carros[i].modelo, g_carros[j].modelo) > 0)
+            {
+                tempCarro = g_carros[i];
+                g_carros[i] = g_carros[j];
+                g_carros[j] = tempCarro;
+            }
+            
+        }
+        
+    }
+
+    printf("| %-20s | %-10s | %-5s | %-12s | %-20s | %-15s |\n",
+             "Modelo", "Placa", "Ano", "Kilometragem", "Dono do carro", "Telefone");
+
+    for (i = 0; i < g_qtdCarros; i++)
+    {
+        printf("| %-20s | %-10s | %-5d | %-12.2f | %-20s | %-15s |\n",
+               g_carros[i].modelo,
+               g_carros[i].placa,
+               g_carros[i].anoFabricacao,
+               g_carros[i].kilometragem,
+               g_carros[i].cliente.nome,
+               g_carros[i].cliente.telefone);
     }
 }
 
