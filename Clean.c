@@ -44,7 +44,8 @@ typedef struct
             Declaração das funções
 **********************************************/
 void menu(void);
-void menuInterno(void);
+void mostrarMenu(void);
+void cabecalho(char texto[49]);
 
 void cadastrarCliente(void);
 void cadastrarCarro(void);
@@ -138,7 +139,8 @@ int main()
 /**********************************************
                     Funções
 **********************************************/
-void menuInterno(void){
+
+void mostrarMenu(void){
     limparTela();
 
     printf(" |-------------------------------------------------|\n");
@@ -157,6 +159,34 @@ void menuInterno(void){
     printf(" Escolha uma opcao: ");
 }
 
+void cabecalho(char texto[50]){ // Imprime um cabeçalho personalizado
+    int tam = strlen(texto),
+        qtdEspacos = ((50 - tam) / 2), // Conta quantos espaços terá antes e depois do texto -- Centralizando
+        i = 0;
+        
+    limparTela();
+    printf(" |--------------------------------------------------|\n");
+    printf(" |");
+
+    for(i = 0; i < qtdEspacos; i++){ // Imprime os espaços antes do texto
+        printf(" ");
+    }
+
+    printf("%s", texto); // Imprime o texto
+
+    if ((tam % 2) == 1){ // Caso a qtd de espaços seja impar -- Soma 1
+        qtdEspacos++;
+    }
+
+    for(i = 0; i < qtdEspacos; i++){ // Imprime os espaços depois do texto
+        printf(" ");
+    }
+
+    printf("|\n");
+    printf(" |--------------------------------------------------|\n");
+    printf("\n\n");
+}
+
 void menu(void){
     int op = 0;
     float kilometragem = 0;
@@ -165,40 +195,24 @@ void menu(void){
 
     do
     {
-        menuInterno();
+        mostrarMenu();
         scanf("%d", &op);
         getchar();
 
         switch (op)
         {
         case 1:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |             CADASTRAR NOVO CLIENTE              |\n");
-            printf(" |-------------------------------------------------|\n");
-            printf("\n\n");
-
+            cabecalho("CADASTRAR NOVO CLIENTE");
             cadastrarCliente();
-
             break;
         
         case 2:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |              CADASTRAR NOVO CARRO               |\n");
-            printf(" |-------------------------------------------------|\n");
-            printf("\n\n");
-
+            cabecalho("CADASTRAR NOVO CARRO");
             cadastrarCarro();
-
             break;
 
         case 3:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |           BUSCAR CLIENTE PELO NOME              |\n");
-            printf(" |-------------------------------------------------|\n");
-            printf("\n\n");
+            cabecalho("BUSCAR CLIENTE PELO NOME");
             printf("NOME: ");
 
             fgets(nome, 50, stdin);
@@ -209,11 +223,7 @@ void menu(void){
             break;
         
         case 4:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |            BUSCAR CARRO PELA PLACA              |\n");
-            printf(" |-------------------------------------------------|\n");
-            printf("\n\n");
+            cabecalho("BUSCAR CARRO PELA PLACA");
             printf("PLACA: ");
 
             fgets(placa, 50, stdin);
@@ -224,11 +234,7 @@ void menu(void){
             break;
 
         case 5:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |  QUANTIDADE DE CARROS COM A KILOMETRAGEM ACIMA  |\n");
-            printf(" |-------------------------------------------------|\n");
-            printf("\n\n");
+            cabecalho("QUANTIDADE DE CARROS COM A KILOMETRAGEM ACIMA");
             printf("KILOMETRAGEM: ");
 
             scanf("%f", &kilometragem);
@@ -240,10 +246,7 @@ void menu(void){
             break;
         
         case 6:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |                AGENDAR SERVIÇOS                 |\n");
-            printf(" |-------------------------------------------------|\n");
+            cabecalho("AGENDAR SERVIÇOS");
             agendarServico();
             getchar();
 
@@ -251,19 +254,13 @@ void menu(void){
             break;
 
         case 7:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |           CONSULTAR VALORES PENDENTES           |\n");
-            printf(" |-------------------------------------------------|\n");
+            cabecalho("CONSULTAR VALORES PENDENTES");
             valoresPendentes();
             enterParaContinuar();
             break;
 
         case 8:
-            limparTela();
-            printf(" |-------------------------------------------------|\n");
-            printf(" |             SERVIÇO MAIS SOLICITADO             |\n");
-            printf(" |-------------------------------------------------|\n");
+            cabecalho("SERVIÇO MAIS SOLICITADO");
             servicoMaisUsado();
             enterParaContinuar();
             break;
