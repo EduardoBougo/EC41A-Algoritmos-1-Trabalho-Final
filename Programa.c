@@ -807,6 +807,8 @@ void registrarPagamento() {
     {
         g_servicos[input - 1].pago = 'S';
         printf("O servico %s, vinculado ao carro com placa %s foi concluido!\n", servicos[g_servicos[input - 1].tipoDeServico - 1], g_servicos[input - 1].carro.placa);
+    } else {
+        printf("Nao ha um servico com este identificador!")
     }
     
     
