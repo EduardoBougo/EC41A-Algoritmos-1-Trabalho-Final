@@ -97,8 +97,8 @@ int g_qtdCarros = 3;
 int g_qtdServicos = 0;
 int g_id = 1;
 Cliente g_clientes[10];
-Carro g_carros[10];
-Servico g_servicos[10];
+Carro g_carros[50];
+Servico g_servicos[50];
 
 
 
@@ -715,7 +715,7 @@ void valoresPendentes(void)
                     int tipo = g_servicos[j].tipoDeServico; 
                     switch(tipo) {
                         case 1:
-                            printf("Serviço de Resisão básica (750,0) - não pago\n");
+                            printf("Serviço de Revisão básica (750,0) - não pago\n");
                             break;
                         case 2:
                             printf("Serviço de Troca de óleo (190,0) - não pago\n");
@@ -743,49 +743,51 @@ void valoresPendentes(void)
 
 void servicoMaisUsado(void) {
     int i = 0;
-    int j = 0;
-    int num = 0;
-    int vezes = 0;
-    int maior = 0;
+    int cont[4] = {0, 0, 0, 0, };
+    int id_Servico = 0;
+    int maiorQtd = 0;
+    
+    if (g_qtdServicos == 0) { // Caso não haja nenhum serviço registrado ainda
+        printf("\nNenhum serviço registrado ainda\n");
+        return;
+    }
 
-    for (i = 0; i < g_qtdServicos; i++)
+    for (i = 0; i < g_qtdServicos; i++) // Contador de quantas vezes o serviço foi pedido
     {
-        vezes = 0;
-        for (j = (i + 1); j < g_qtdServicos; j++)
-        {
-            if (g_servicos[i].tipoDeServico == g_servicos[j].tipoDeServico)
-            {
-                vezes++;
-            }
-            
-        }
-        
-        if (vezes > maior)
-        {
-            maior = vezes;
-            num = g_servicos[i].tipoDeServico;
-        }
-        
+        id_Servico = g_servicos[i].tipoDeServico;
+        cont[id_Servico - 1]++;
     }
     
-    printf("Serviço mais pedido: ");
+    for (i = 0; i < 4; i++){ 
+        if(cont[i] > maiorQtd){ // Compara os valores e identifica a maior quantidades de pedidos de um serviço
+            maiorQtd = cont[i];
+        }
+    }
 
-    switch (num)
-    {
-        case 1:
-            printf("Revisão básica");
-            break;
-        case 2:
-            printf("Troca de óleo");
-            break;
-        case 3:
-            printf("Alinhamento e balanceamento");
-            break;
-        case 4:
-            printf("Higienização");
-            break;
-        default:
-            break;
+    printf("Serviço(s) mais pedido(s): \n");
+    for (i = 0; i < 4; i++){
+        if(cont[i] == maiorQtd){ // Mostrar o(s) serviço(s) mais usado(s)
+            switch (i + 1)
+            {
+            case 1:
+                printf("- Revisão básica\n");
+                break;
+            case 2:
+                printf("- Troca de óleo\n");
+                break;
+
+            case 3:
+                printf("- Alinhamento e balanceamento\n");
+                break;
+
+            case 4:
+                printf("- Higienização \n");
+                break;
+
+            default:
+                break;
+            }
+        }
     }
 }
 
