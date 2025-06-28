@@ -43,9 +43,10 @@ typedef struct
 /**********************************************
             Declaração das funções
 **********************************************/
+
 void menu(void);
 void mostrarMenu(void);
-void cabecalho(char texto[49]);
+void cabecalho(char texto[50]);
 
 void cadastrarCliente(void);
 void cadastrarCarro(void);
@@ -57,25 +58,21 @@ void valoresPendentes(void);
 void servicoMaisUsado(void);
 
 int validarNome(char nome[50]);
-int contemSomenteLetras(char text[50]);
-
 int validarTelefone(char telefone[15]);
-int contemSomenteNumeros(char text[15]);
-
 int validarData(Data dt);
-int anoBissexto(int ano);
 int validarDataAnterior(Data dt);
 int validarAnoFabricacao(int ano);
+int contemSomenteLetras(char text[50]);
+int contemSomenteNumeros(char text[15]);
+int anoBissexto(int ano);
 
 int VincularCliente(char nomeCliente[50]);
 int VincularCarro(char modeloCarro[50], char placaCarro[15]);
-
 void agruparPorAno(void);
 
-void bancoDeDados(void);
 void linha(void);
+void bancoDeDados(void);
 void enterParaContinuar(void);
-
 void limparTela(void);
 
 /**********************************************
@@ -136,56 +133,16 @@ int main()
     return 0;
 }
 
+/*************************************************************************
+
+                                FUNÇÕES
+
+*************************************************************************/
+
+
 /**********************************************
-                    Funções
+                Menu Interativo
 **********************************************/
-
-void mostrarMenu(void){
-    limparTela();
-
-    printf(" |-------------------------------------------------|\n");
-    printf(" |                MENU DE OPCOES                   |\n");
-    printf(" |-------------------------------------------------|\n");
-    printf(" | 1 - Cadastrar Cliente                           |\n");
-    printf(" | 2 - Cadastrar Carro                             |\n");
-    printf(" | 3 - Buscar Cliente pelo Nome                    |\n");
-    printf(" | 4 - Buscar Carro pela Placa                     |\n");
-    printf(" | 5 - Quantidade de Carros com Kilometragem Acima |\n");
-    printf(" | 6 - Agendar serviço                             |\n");
-    printf(" | 7 - Consultar valores pendentes                 |\n");
-    printf(" | 8 - Mostrar o serviço mais solicitado           |\n");
-    printf(" | 0 - Sair                                        |\n");
-    printf(" |-------------------------------------------------|\n");
-    printf(" Escolha uma opcao: ");
-}
-
-void cabecalho(char texto[50]){ // Imprime um cabeçalho personalizado
-    int tam = strlen(texto),
-        qtdEspacos = ((50 - tam) / 2), // Conta quantos espaços terá antes e depois do texto -- Centralizando
-        i = 0;
-        
-    limparTela();
-    printf(" |--------------------------------------------------|\n");
-    printf(" |");
-
-    for(i = 0; i < qtdEspacos; i++){ // Imprime os espaços antes do texto
-        printf(" ");
-    }
-
-    printf("%s", texto); // Imprime o texto
-
-    if ((tam % 2) == 1){ // Caso a qtd de espaços seja impar -- Soma 1
-        qtdEspacos++;
-    }
-
-    for(i = 0; i < qtdEspacos; i++){ // Imprime os espaços depois do texto
-        printf(" ");
-    }
-
-    printf("|\n");
-    printf(" |--------------------------------------------------|\n");
-    printf("\n\n");
-}
 
 void menu(void){
     int op = 0;
@@ -270,9 +227,59 @@ void menu(void){
             break;
         }
     } while (op != 0);
-    
-
 }
+
+void mostrarMenu(void){
+    limparTela();
+
+    printf(" |-------------------------------------------------|\n");
+    printf(" |                MENU DE OPCOES                   |\n");
+    printf(" |-------------------------------------------------|\n");
+    printf(" | 1 - Cadastrar Cliente                           |\n");
+    printf(" | 2 - Cadastrar Carro                             |\n");
+    printf(" | 3 - Buscar Cliente pelo Nome                    |\n");
+    printf(" | 4 - Buscar Carro pela Placa                     |\n");
+    printf(" | 5 - Quantidade de Carros com Kilometragem Acima |\n");
+    printf(" | 6 - Agendar serviço                             |\n");
+    printf(" | 7 - Consultar valores pendentes                 |\n");
+    printf(" | 8 - Mostrar o serviço mais solicitado           |\n");
+    printf(" | 0 - Sair                                        |\n");
+    printf(" |-------------------------------------------------|\n");
+    printf(" Escolha uma opcao: ");
+}
+
+void cabecalho(char texto[50]){ // Imprime um cabeçalho personalizado
+    int tam = strlen(texto),
+        qtdEspacos = ((50 - tam) / 2), // Conta quantos espaços terá antes e depois do texto -- Centralizando
+        i = 0;
+        
+    limparTela();
+    printf(" |--------------------------------------------------|\n");
+    printf(" |");
+
+    for(i = 0; i < qtdEspacos; i++){ // Imprime os espaços antes do texto
+        printf(" ");
+    }
+
+    printf("%s", texto); // Imprime o texto
+
+    if ((tam % 2) == 1){ // Caso a qtd de espaços seja impar -- Soma 1
+        qtdEspacos++;
+    }
+
+    for(i = 0; i < qtdEspacos; i++){ // Imprime os espaços depois do texto
+        printf(" ");
+    }
+
+    printf("|\n");
+    printf(" |--------------------------------------------------|\n");
+    printf("\n\n");
+}
+
+
+/**********************************************
+                Funções do Menu
+**********************************************/
 
 void cadastrarCliente(void)
 {
@@ -354,172 +361,6 @@ void cadastrarCarro(void)
 
     g_qtdCarros++; // (+ 1) toda vez que um carro é cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
 }
-int validarNome(char nome[50])
-{ // (1) Verdadeiro -- (0) Falso
-    if ((strlen(nome) > 5) && contemSomenteLetras(nome) && (nome[0] != ' '))
-    {
-        return 1; // -- Nome Válido
-    }
-    else
-    {
-        return 0; // -- Nome Inválido
-    }
-}
-
-int contemSomenteLetras(char text[50])
-{ // (1) Verdadeiro -- (0) Falso
-
-    int tam = strlen(text);
-    int i = 0;
-    for (i = 0; i < tam; i++)
-    {
-        if ((65 <= text[i] && text[i] <= 90) || (97 <= text[i] && text[i] <= 122))
-        {
-            continue;
-        }
-        else
-        {
-            return 0; // -- Outros Caracteres
-        }
-    }
-    return 1; // -- Somente Letras
-}
-
-int validarTelefone(char telefone[15])
-{ // (1) Verdadeiro -- (0) Falso
-    if (telefone[0] == '0' && (strlen(telefone) == 11 || strlen(telefone) == 12) && contemSomenteNumeros(telefone))
-    {
-        return 1; // -- Telefone Válido
-    }
-    else
-    {
-        return 0; // -- Telefone Inválido
-    }
-}
-
-int contemSomenteNumeros(char text[15])
-{
-
-    int tam = strlen(text);
-    int i = 0;
-    for (i = 0; i < tam; i++)
-    {
-        if (48 <= text[i] && text[i] <= 57)
-        {
-            continue;
-        }
-        else
-        {
-            return 0; // -- Outros Caracteres
-        }
-    }
-    return 1; // -- Somente Números
-}
-
-int validarAnoFabricacao(int ano)
-{
-    if (ano > 2025)
-    {
-        return 0;
-    }
-
-    return 1;
-}
-
-int validarData(Data dt)
-{
-    int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
-
-    if ((dt.mes == 2) && anoBissexto(dt.ano))
-    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mes
-        diasNoMes = 29;
-    }
-
-    if ((dt.dia < 1) || (dt.dia > diasNoMes))
-    { // Testando se o dia é Valido
-        return 0;
-    }
-
-    if ((dt.mes < 1) || (dt.mes > 12))
-    { // Testando se o mês é Valido
-        return 0;
-    }
-
-    if ((dt.ano < 1900) || (dt.ano > 2025))
-    { // Testando se o ano é Valido
-        return 0;
-    }
-
-    if (dt.ano > 2025 || (dt.ano == 2025 && dt.dia > 30) || (dt.ano == 2025 && dt.mes > 6))
-    { // Testando se é posterior que a data de hoje
-        return 0;
-    }
-
-    return 1; // Retornar verdadeiro(1) pois a data é Valida
-}
-
-int validarDataAnterior(Data dt)
-{
-    int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
-
-    if ((dt.mes == 2) && anoBissexto(dt.ano))
-    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mes
-        diasNoMes = 29;
-    }
-
-    if ((dt.dia < 1) || (dt.dia > diasNoMes))
-    { // Testando se o dia é Valido
-        return 0;
-    }
-
-    if ((dt.mes < 1) || (dt.mes > 12))
-    { // Testando se o mês é Valido
-        return 0;
-    }
-
-    if (dt.ano < 2025 || (dt.ano == 2025 && dt.mes < 6) || (dt.ano == 2025 && dt.mes == 6 && dt.dia < 30))
-    { // Testando se é anterior que a data de hoje
-        return 0;
-    }
-
-    return 1; // Retornar verdadeiro(1) pois a data é Valida
-}
-int VincularCliente(char nomeCliente[50])
-{
-    int pos = 0;
-    for (pos = 0; pos < g_qtdClientes; pos++)
-    {
-        if (strcmp(nomeCliente, g_clientes[pos].nome) == 0)
-        {
-            return pos; // -- Retorna a posição do Cliente
-        }
-    }
-    return (-1); // -- Cliente não encontrado
-}
-
-int VincularCarro(char modeloCarro[50], char placaCarro[15])
-{
-    int pos = 0;
-    for (pos = 0; pos < g_qtdCarros; pos++)
-    {
-        if (strcmp(modeloCarro, g_carros[pos].modelo) == 0 && strcmp(placaCarro, g_carros[pos].placa) == 0)
-        {
-            return pos; // -- Retorna a posição do Carro
-        }
-    }
-    return (-1); // -- Carro não encontrado
-}
-
-int anoBissexto(int ano)
-{ // Testando anos bissextos
-    /* Testa se é divisivel por 4, e ao mesmo tempo, se é divisivel por 400 ou Não é divisivel por 100 */
-    return (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));
-    /* Retorna -- (1) Verdadeiro -- (0) Falso */
-}
 
 void buscarClientePeloNome(char nome[50]) {
     
@@ -575,45 +416,6 @@ int kilometragemCarros(float km) {
 
     return qtd;
 }
-
-void agruparPorAno() {
-    int i = 0;
-    int j = 0;
-
-    for (int i = 0; i < g_qtdCarros; i++) 
-    {
-        for (j = (i + 1); j < g_qtdCarros; j++) 
-        {
-            if (g_carros[i].anoFabricacao > g_carros[j].anoFabricacao) 
-            {
-                //Trocar os carros, ordenando por ano de fabricação
-                Carro temp = g_carros[i];
-                g_carros[i] = g_carros[j];
-                g_carros[j] = temp;
-            }
-        }
-    }
-
-    int anoAtual = 0;
-    for (i = 0; i < g_qtdCarros; i++) 
-    {
-        //Se o ano de fabricação não for igual ao da variável anoAtual, essa variável irá receber outro ano.
-        if (g_carros[i].anoFabricacao != anoAtual) 
-        {
-            printf("%d\n", g_carros[i].anoFabricacao);
-            anoAtual = g_carros[i].anoFabricacao;
-        }
-
-        
-        printf("Modelo: %s\n", g_carros[i].modelo);
-        printf("Placa: %s\n", g_carros[i].placa);
-        printf("Kilometragem: %.2f\n", g_carros[i].kilometragem);
-        printf("Dono: %s\n", g_carros[i].cliente.nome);
-        printf("Telefone do Dono: %s\n", g_carros[i].cliente.telefone);
-        linha();
-    }
-}
-
 
 void agendarServico()
 {
@@ -788,6 +590,223 @@ void servicoMaisUsado(void) {
     }
 }
 
+
+/**********************************************
+              Validação de Dados
+**********************************************/
+
+int validarNome(char nome[50])
+{ // (1) Verdadeiro -- (0) Falso
+    if ((strlen(nome) > 5) && contemSomenteLetras(nome) && (nome[0] != ' '))
+    {
+        return 1; // -- Nome Válido
+    }
+    else
+    {
+        return 0; // -- Nome Inválido
+    }
+}
+
+int validarTelefone(char telefone[15])
+{ // (1) Verdadeiro -- (0) Falso
+    if (telefone[0] == '0' && (strlen(telefone) == 11 || strlen(telefone) == 12) && contemSomenteNumeros(telefone))
+    {
+        return 1; // -- Telefone Válido
+    }
+    else
+    {
+        return 0; // -- Telefone Inválido
+    }
+}
+
+int validarData(Data dt)
+{
+    int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
+
+    if ((dt.mes == 2) && anoBissexto(dt.ano))
+    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mes
+        diasNoMes = 29;
+    }
+
+    if ((dt.dia < 1) || (dt.dia > diasNoMes))
+    { // Testando se o dia é Valido
+        return 0;
+    }
+
+    if ((dt.mes < 1) || (dt.mes > 12))
+    { // Testando se o mês é Valido
+        return 0;
+    }
+
+    if ((dt.ano < 1900) || (dt.ano > 2025))
+    { // Testando se o ano é Valido
+        return 0;
+    }
+
+    if (dt.ano > 2025 || (dt.ano == 2025 && dt.dia > 30) || (dt.ano == 2025 && dt.mes > 6))
+    { // Testando se é posterior que a data de hoje
+        return 0;
+    }
+
+    return 1; // Retornar verdadeiro(1) pois a data é Valida
+}
+
+int validarDataAnterior(Data dt)
+{
+    int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
+
+    if ((dt.mes == 2) && anoBissexto(dt.ano))
+    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mes
+        diasNoMes = 29;
+    }
+
+    if ((dt.dia < 1) || (dt.dia > diasNoMes))
+    { // Testando se o dia é Valido
+        return 0;
+    }
+
+    if ((dt.mes < 1) || (dt.mes > 12))
+    { // Testando se o mês é Valido
+        return 0;
+    }
+
+    if (dt.ano < 2025 || (dt.ano == 2025 && dt.mes < 6) || (dt.ano == 2025 && dt.mes == 6 && dt.dia < 30))
+    { // Testando se é anterior que a data de hoje
+        return 0;
+    }
+
+    return 1; // Retornar verdadeiro(1) pois a data é Valida
+}
+
+int validarAnoFabricacao(int ano)
+{
+    if (ano > 2025)
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
+int contemSomenteLetras(char text[50])
+{ // (1) Verdadeiro -- (0) Falso
+    
+    int tam = strlen(text);
+    int i = 0;
+    for (i = 0; i < tam; i++)
+    {
+        if ((65 <= text[i] && text[i] <= 90) || (97 <= text[i] && text[i] <= 122))
+        {
+            continue;
+        }
+        else
+        {
+            return 0; // -- Outros Caracteres
+        }
+    }
+    return 1; // -- Somente Letras
+}
+
+int contemSomenteNumeros(char text[15])
+{
+
+    int tam = strlen(text);
+    int i = 0;
+    for (i = 0; i < tam; i++)
+    {
+        if (48 <= text[i] && text[i] <= 57)
+        {
+            continue;
+        }
+        else
+        {
+            return 0; // -- Outros Caracteres
+        }
+    }
+    return 1; // -- Somente Números
+}
+
+int anoBissexto(int ano)
+{ // Testando anos bissextos
+    /* Testa se é divisivel por 4, e ao mesmo tempo, se é divisivel por 400 ou Não é divisivel por 100 */
+    return (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));
+    /* Retorna -- (1) Verdadeiro -- (0) Falso */
+}
+
+
+/**********************************************
+             Vinculação de Dados
+**********************************************/
+
+int VincularCliente(char nomeCliente[50])
+{
+    int pos = 0;
+    for (pos = 0; pos < g_qtdClientes; pos++)
+    {
+        if (strcmp(nomeCliente, g_clientes[pos].nome) == 0)
+        {
+            return pos; // -- Retorna a posição do Cliente
+        }
+    }
+    return (-1); // -- Cliente não encontrado
+}
+
+int VincularCarro(char modeloCarro[50], char placaCarro[15])
+{
+    int pos = 0;
+    for (pos = 0; pos < g_qtdCarros; pos++)
+    {
+        if (strcmp(modeloCarro, g_carros[pos].modelo) == 0 && strcmp(placaCarro, g_carros[pos].placa) == 0)
+        {
+            return pos; // -- Retorna a posição do Carro
+        }
+    }
+    return (-1); // -- Carro não encontrado
+}
+
+void agruparPorAno() {
+    int i = 0;
+    int j = 0;
+
+    for (int i = 0; i < g_qtdCarros; i++) 
+    {
+        for (j = (i + 1); j < g_qtdCarros; j++) 
+        {
+            if (g_carros[i].anoFabricacao > g_carros[j].anoFabricacao) 
+            {
+                //Trocar os carros, ordenando por ano de fabricação
+                Carro temp = g_carros[i];
+                g_carros[i] = g_carros[j];
+                g_carros[j] = temp;
+            }
+        }
+    }
+
+    int anoAtual = 0;
+    for (i = 0; i < g_qtdCarros; i++) 
+    {
+        //Se o ano de fabricação não for igual ao da variável anoAtual, essa variável irá receber outro ano.
+        if (g_carros[i].anoFabricacao != anoAtual) 
+        {
+            printf("%d\n", g_carros[i].anoFabricacao);
+            anoAtual = g_carros[i].anoFabricacao;
+        }
+
+        
+        printf("Modelo: %s\n", g_carros[i].modelo);
+        printf("Placa: %s\n", g_carros[i].placa);
+        printf("Kilometragem: %.2f\n", g_carros[i].kilometragem);
+        printf("Dono: %s\n", g_carros[i].cliente.nome);
+        printf("Telefone do Dono: %s\n", g_carros[i].cliente.telefone);
+        linha();
+    }
+}
+
+
 /**********************************************
                 Funções Internas
 **********************************************/
@@ -837,8 +856,6 @@ void bancoDeDados(void){
 void enterParaContinuar(void){
     printf("\n>>> Precione a tecla Enter para continuar <<<\n");
     getchar();
-
-
 }
 
 void limparTela(void) {
