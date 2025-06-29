@@ -69,6 +69,7 @@ void valoresPendentes(void);
 void servicoMaisUsado(void);
 void agendarServico(void);
 void promocaoAniversario(int dia, int mes);
+void registrarPagamento(void);
 void linha(void);
 
 /**********************************************
@@ -97,10 +98,16 @@ int main()
     // agruparPorAno();
     promocaoAniversario(12, 2);
 
+    agendarServico();
+    agendarServico();
+    valoresPendentes();
+    registrarPagamento();
+    valoresPendentes();
+
     //agruparOrdemAlfabetica();
     
 
-    /*agendarServico();
+    /*
     agendarServico();
     agendarServico();
 
@@ -761,6 +768,51 @@ void promocaoAniversario(int dia, int mes) {
         }
         
     }
+}
+
+void registrarPagamento() {
+    int i = 0;
+    int input = 0;
+    int maiorId = 0;
+    
+    char servicos[4][50] = {"Revisao basica", "Troca de oleo", "Alinhamento e balanceamento", "Higienizacao"};
+    for (i = 0; i < g_qtdServicos; i++)
+    {   
+        printf("Identificador do servico: %d\n", g_servicos[i].identificador);
+        printf("Carro: %s\n", g_servicos[i].carro.modelo);
+        printf("Placa do carro: %s\n", g_servicos[i].carro.placa);
+        printf("Servico: %s\n", servicos[g_servicos[i].tipoDeServico - 1]);
+        printf("Situacao do pagamento: %s\n", g_servicos[i].pago == 'N' ? "Pendente\n" : "Concluido\n");
+
+        if(g_servicos[i].identificador > maiorId) {
+            maiorId = g_servicos[i].identificador;
+        }
+    }
+
+    linha();
+
+    do
+    {
+        printf("Digite o identificador do servico que deseja pagar: ");
+        scanf("%d", &input);
+
+        if (input == 0)
+        {
+            printf("Invalido\n");
+        }
+        
+    } while (input == 0);
+    
+    if (input <= maiorId)
+    {
+        g_servicos[input - 1].pago = 'S';
+        printf("O servico %s, vinculado ao carro com placa %s foi concluido!\n", servicos[g_servicos[input - 1].tipoDeServico - 1], g_servicos[input - 1].carro.placa);
+    } else {
+        printf("Nao ha um servico com este identificador!")
+    }
+    
+    
+    linha();
 }
 
 void linha(void)
