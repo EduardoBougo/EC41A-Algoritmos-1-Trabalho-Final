@@ -187,7 +187,12 @@ void menu(void)
 
             scanf("%f", &kilometragem);
 
-            printf("\nExistem %d carros com kilometragem acima de %.2f cadastrados no sistema.\n", kilometragemCarros(kilometragem), kilometragem);
+            if (kilometragemCarros(kilometragem) > 0) {
+                printf("\nExistem %d carros com kilometragem acima de %.2f cadastrados no sistema.\n", kilometragemCarros(kilometragem), kilometragem);
+            } else {
+                printf("\nNão há carros com kilometragem acima de %.2f no sistema.\n", kilometragem);
+            }
+            
             getchar();
 
             enterParaContinuar();
@@ -201,7 +206,7 @@ void menu(void)
             break;
 
         case 7:
-            cabecalho("CONSULTAR VALORES PENDENTES");
+            cabecalho("CONSULTAR VALORES PENDENTES/CONCLUÍDOS");
             valoresPendentes();
             enterParaContinuar();
             break;
@@ -233,6 +238,15 @@ void menu(void)
 
             break;
 
+        case 11:
+            cabecalho("CARROS POR ORDEM ALFABÉTICA");
+            
+            agruparOrdemAlfabetica();
+
+            enterParaContinuar();
+
+            break;
+
         default:
             limparTela();
             break;
@@ -253,10 +267,11 @@ void mostrarMenu(void)
     printf(" | 4  - Buscar Carro pela Placa                    |\n");
     printf(" | 5  - Quantidade de Carros com Kilometragem Acima|\n");
     printf(" | 6  - Agendar serviço                            |\n");
-    printf(" | 7  - Consultar valores pendentes                |\n");
+    printf(" | 7  - Consultar valores pendentes/concluídos     |\n");
     printf(" | 8  - Registrar pagamento                        |\n");
     printf(" | 9  - Mostrar o serviço mais solicitado          |\n");
     printf(" | 10 - Conferir promoção de aniversário           |\n");
+    printf(" | 11 - Listar carros por ordem alfabética         |\n");
     printf(" | 0 - Sair                                        |\n");
     printf(" |-------------------------------------------------|\n");
     printf(" Escolha uma opçao: ");
@@ -324,7 +339,7 @@ void cadastrarCliente(void)
         validar = validarTelefone(g_clientes[g_qtdClientes].telefone);
         if (!validar)
         {
-            printf(">>>Telefone Invalido<<<\n");
+            printf(">>>Telefone Invalido: Há mais ou menos caracteres que o desejado.<<<\n");
         }
     } while (!validar);
 
@@ -389,7 +404,7 @@ void cadastrarCarro(void)
         validar = validarAnoFabricacao(g_carros[g_qtdCarros].anoFabricacao);
         if (!validar)
         {
-            printf(">>>Ano posterior ao desse<<<");
+            printf(">>>Ano não pode ser posterior ao atual<<<");
         }
 
     } while (!validar);
@@ -427,7 +442,7 @@ void buscarClientePeloNome(char nome[50])
             }
         }
     } else {
-        printf("Não foi encontrado o cliente com nome %s", nome);
+        printf("Não foi encontrado nenhum cliente com nome %s", nome);
     }
 }
 
@@ -565,9 +580,9 @@ void valoresPendentes(void)
             if (strcmp(carroAtual.placa, g_servicos[j].carro.placa) == 0)
             {
                 encontrouServico = 1;
+                int tipo = g_servicos[j].tipoDeServico;
                 if (g_servicos[j].pago == 'N')
                 {
-                    int tipo = g_servicos[j].tipoDeServico;
                     switch (tipo)
                     {
                     case 1:
@@ -581,6 +596,22 @@ void valoresPendentes(void)
                         break;
                     case 4:
                         printf("Serviço de Higienização (90,0) - não pago\n");
+                        break;
+                    }
+                } else {
+                    switch (tipo)
+                    {
+                    case 1:
+                        printf("Serviço de Revisão básica - pago\n");
+                        break;
+                    case 2:
+                        printf("Serviço de Troca de óleo - pago\n");
+                        break;
+                    case 3:
+                        printf("Serviço de Alinhamento e balanceamento - pago\n");
+                        break;
+                    case 4:
+                        printf("Serviço de Higienização - pago\n");
                         break;
                     }
                 }
@@ -698,13 +729,22 @@ void servicoMaisUsado(void)
 
 void promocaoAniversario(int dia, int mes) {
     int i = 0;
+    int encontrado = 0;
+    char meses[12][50] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
     for (i = 0; i < g_qtdClientes; i++)
     {
         if (g_clientes[i].aniversario.mes == mes && (g_clientes[i].aniversario.dia >= dia && g_clientes[i].aniversario.dia <= (dia + 7)))
         {
-            printf("O cliente %s foi selecionado para a promoção!\n", g_clientes[i].nome);
+            printf("O cliente %s foi selecionado para a promoção de aniversário do dia %d ao dia %d no mês de %s!\n", g_clientes[i].nome, dia, (dia + 7), meses[mes - 1]);
+            encontrado = 1;
         }
     }
+
+    if (!encontrado)
+    {
+        printf("Não há nenhum cliente que faz aniversário do dia %d ao dia %d no mês de %s", dia, (dia + 7), meses[mes - 1]);
+    }
+    
     getchar();
 }
 
@@ -979,16 +1019,16 @@ void bancoDeDados(void)
     // Cliente 2
     strcpy(g_clientes[1].nome, "eduardo");
     strcpy(g_clientes[1].telefone, "018981101017");
-    g_clientes[1].aniversario.dia = 20;
+    g_clientes[1].aniversario.dia = 18;
     g_clientes[1].aniversario.mes = 2;
     g_clientes[1].aniversario.ano = 2005;
 
     // Cliente 3
     strcpy(g_clientes[2].nome, "gustavo");
     strcpy(g_clientes[2].telefone, "018991434719");
-    g_clientes[0].aniversario.dia = 23;
-    g_clientes[0].aniversario.mes = 4;
-    g_clientes[0].aniversario.ano = 2001;
+    g_clientes[2].aniversario.dia = 23;
+    g_clientes[2].aniversario.mes = 4;
+    g_clientes[2].aniversario.ano = 2001;
 
 
     // Carro 1
