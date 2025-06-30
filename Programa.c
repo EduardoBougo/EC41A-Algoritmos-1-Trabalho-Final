@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
@@ -6,7 +5,7 @@
 #include <ctype.h>
 
 /**********************************************
-            Declaraï¿½ï¿½o das structs
+            Declaração das structs
 **********************************************/
 
 typedef struct
@@ -42,7 +41,7 @@ typedef struct
 } Servico;
 
 /**********************************************
-            Declaraï¿½ï¿½o das funï¿½ï¿½es
+            Declaração das funções
 **********************************************/
 
 void menu(void);
@@ -81,18 +80,18 @@ void limparTela(void);
 
 
 /**********************************************
-        Declaraï¿½ï¿½o das variaveis Globais
+        Declaração das variaveis Globais
 **********************************************/
 
 /******************************
-g_qtdClientes -- Contador de quantos clientes jï¿½ foram cadastrados
-g_qtdCarros   -- Contador de quantos carros jï¿½ foram cadastrados
-q_qtdServicos -- Contador de quantos servi?os jï¿½ foram agendados
+g_qtdClientes -- Contador de quantos clientes já foram cadastrados
+g_qtdCarros   -- Contador de quantos carros já foram cadastrados
+q_qtdServicos -- Contador de quantos servi?os já foram agendados
 g_id          --
 ---------------------------------------------------------------
-g_Clientes    -- Vetor que armazena os dados de cada cliente em uma posiï¿½ï¿½o via struct
-g_carros      -- Vetor que armazena os dados de cada carro em uma posiï¿½ï¿½o via struct
-g_servicos    -- Vetor que armazena os dados de cada serviï¿½o em uma posiï¿½ï¿½o via struct
+g_Clientes    -- Vetor que armazena os dados de cada cliente em uma posição via struct
+g_carros      -- Vetor que armazena os dados de cada carro em uma posição via struct
+g_servicos    -- Vetor que armazena os dados de cada serviço em uma posição via struct
 ******************************/
 
 int g_qtdClientes = 3;
@@ -110,7 +109,7 @@ Servico g_servicos[50];
 
 int main()
 {
-    // Acentuaï¿½ï¿½o
+    // Acentuação
     setlocale(LC_ALL, "Portuguese_Brazil");
 
     bancoDeDados();
@@ -122,7 +121,7 @@ int main()
 
 /*************************************************************************
 
-                                FUNï¿½ï¿½ES
+                                FUNÇÕES
 
 *************************************************************************/
 
@@ -190,7 +189,7 @@ void menu(void)
             if (kilometragemCarros(kilometragem) > 0) {
                 printf("\nExistem %d carros com kilometragem acima de %.2f cadastrados no sistema.\n", kilometragemCarros(kilometragem), kilometragem);
             } else {
-                printf("\nNï¿½o hï¿½ carros com kilometragem acima de %.2f no sistema.\n", kilometragem);
+                printf("\nNão há carros com kilometragem acima de %.2f no sistema.\n", kilometragem);
             }
 
             getchar();
@@ -199,14 +198,14 @@ void menu(void)
             break;
 
         case 6:
-            cabecalho("AGENDAR SERVIï¿½OS");
+            cabecalho("AGENDAR SERVIÇOS");
             agendarServico();
 
             enterParaContinuar();
             break;
 
         case 7:
-            cabecalho("CONSULTAR VALORES PENDENTES/CONCLUï¿½DOS");
+            cabecalho("CONSULTAR VALORES PENDENTES/CONCLUÍDOS");
             valoresPendentes();
             enterParaContinuar();
             break;
@@ -218,18 +217,18 @@ void menu(void)
             break;
 
         case 9:
-            cabecalho("SERVIï¿½O MAIS SOLICITADO");
+            cabecalho("SERVIÇO MAIS SOLICITADO");
             servicoMaisUsado();
             enterParaContinuar();
             break;
 
         case 10:
-            cabecalho("CONFERIR PROMOï¿½ï¿½O DE ANIVERSï¿½RIO");
+            cabecalho("CONFERIR PROMOÇÃO DE ANIVERSÁRIO");
             do
             {
                 printf("Dia: ");
                 scanf("%d", &niver.dia);
-                printf("Mï¿½s: ");
+                printf("Mês: ");
                 scanf("%d", &niver.mes);
             } while (!validarData(niver));
             
@@ -238,7 +237,7 @@ void menu(void)
             break;
 
         case 11:
-            cabecalho("CARROS POR ORDEM ALFABï¿½TICA");
+            cabecalho("CARROS POR ORDEM ALFABÉTICA");
             agruparOrdemAlfabetica();
             enterParaContinuar();
             break;
@@ -255,28 +254,28 @@ void mostrarMenu(void)
     limparTela();
 
     printf(" |--------------------------------------------------|\n");
-    printf(" |                  MENU DE OPï¿½ï¿½ES                  |\n");
+    printf(" |                  MENU DE OPÇÕES                  |\n");
     printf(" |--------------------------------------------------|\n");
     printf(" | 1  - Cadastrar Cliente                           |\n");
     printf(" | 2  - Cadastrar Carro                             |\n");
     printf(" | 3  - Buscar Cliente pelo Nome                    |\n");
     printf(" | 4  - Buscar Carro pela Placa                     |\n");
     printf(" | 5  - Quantidade de Carros com Kilometragem Acima |\n");
-    printf(" | 6  - Agendar serviï¿½o                             |\n");
+    printf(" | 6  - Agendar serviço                             |\n");
     printf(" | 7  - Consultar valores pendentes                 |\n");
     printf(" | 8  - Registrar pagamento                         |\n");
-    printf(" | 9  - Mostrar o serviï¿½o mais solicitado           |\n");
-    printf(" | 10 - Conferir promoï¿½ï¿½o de aniversï¿½rio            |\n");
-    printf(" | 11 - Listar carrospor ordem alfabï¿½tica           |\n");
+    printf(" | 9  - Mostrar o serviço mais solicitado           |\n");
+    printf(" | 10 - Conferir promoção de aniversário            |\n");
+    printf(" | 11 - Listar carrospor ordem alfabética           |\n");
     printf(" | 0 - Sair                                         |\n");
     printf(" |--------------------------------------------------|\n");
-    printf(" Escolha uma opï¿½ao: ");
+    printf(" Escolha uma opçao: ");
 }
 
 void cabecalho(char texto[50])
-{ // Imprime um cabeï¿½alho personalizado
+{ // Imprime um cabeçalho personalizado
     int tam = strlen(texto),
-        qtdEspacos = ((50 - tam) / 2), // Conta quantos espaï¿½os terï¿½ antes e depois do texto -- Centralizando
+        qtdEspacos = ((50 - tam) / 2), // Conta quantos espaços terá antes e depois do texto -- Centralizando
         i = 0;
 
     limparTela();
@@ -284,19 +283,19 @@ void cabecalho(char texto[50])
     printf(" |");
 
     for (i = 0; i < qtdEspacos; i++)
-    { // Imprime os espaï¿½os antes do texto
+    { // Imprime os espaços antes do texto
         printf(" ");
     }
 
     printf("%s", texto); // Imprime o texto
 
     if ((tam % 2) == 1)
-    { // Caso a qtd de espaï¿½os seja impar -- Soma 1
+    { // Caso a qtd de espaços seja impar -- Soma 1
         qtdEspacos++;
     }
 
     for (i = 0; i < qtdEspacos; i++)
-    { // Imprime os espaï¿½os depois do texto
+    { // Imprime os espaços depois do texto
         printf(" ");
     }
 
@@ -306,14 +305,14 @@ void cabecalho(char texto[50])
 }
 
 /**********************************************
-                Funï¿½ï¿½es do Menu
+                Funções do Menu
 **********************************************/
 
 void cadastrarCliente(void)
 {
     int validar = 0;
     Data tempData;
-    do // Loop. Recebe o nome e checa se ï¿½ Vï¿½lido
+    do // Loop. Recebe o nome e checa se é Válido
     {
         printf("Digite seu nome: ");
         fgets(g_clientes[g_qtdClientes].nome, 50, stdin);
@@ -326,7 +325,7 @@ void cadastrarCliente(void)
         }
     } while (!validar);
 
-    do // Loop. Recebe o telefone e checa se ï¿½ Vï¿½lido
+    do // Loop. Recebe o telefone e checa se é Válido
     {
         printf("Digite seu telefone: ");
         fgets(g_clientes[g_qtdClientes].telefone, 15, stdin);
@@ -339,7 +338,7 @@ void cadastrarCliente(void)
         }
     } while (!validar);
 
-    do // Loop. Recebe a data de aniversario e checa se ï¿½ Vï¿½lido
+    do // Loop. Recebe a data de aniversario e checa se é Válido
     {
         printf("Digite o dia de seu nascimento: ");
         scanf("%d", &tempData.dia);
@@ -350,13 +349,13 @@ void cadastrarCliente(void)
 
         if (!validarData(tempData))
         {
-            printf(">>>Data invï¿½lida<<<\n");
+            printf(">>>Data inválida<<<\n");
         }
     } while (!validarData(tempData));
 
     g_clientes[g_qtdClientes].aniversario = tempData;
 
-    g_qtdClientes++; // (+ 1) toda vez que um cliente ï¿½ cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
+    g_qtdClientes++; // (+ 1) toda vez que um cliente é cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
 }
 
 void cadastrarCarro(void)
@@ -373,7 +372,7 @@ void cadastrarCarro(void)
         validar = VincularCliente(nome);
         if (validar == (-1))
         {
-            printf("Cliente nï¿½o existe\n");
+            printf("Cliente não existe\n");
         }
     } while (validar == (-1));
 
@@ -391,9 +390,9 @@ void cadastrarCarro(void)
     printf("Digite a kilometragem do carro: ");
     scanf("%f", &g_carros[g_qtdCarros].kilometragem);
 
-    do // Loop. Recebe o ano e checa se ï¿½ Vï¿½lido
+    do // Loop. Recebe o ano e checa se é Válido
     {
-        printf("Digite o ano de fabricaï¿½ï¿½o do carro: ");
+        printf("Digite o ano de fabricação do carro: ");
         scanf("%d", &g_carros[g_qtdCarros].anoFabricacao);
         getchar();
 
@@ -405,7 +404,7 @@ void cadastrarCarro(void)
 
     } while (!validar);
 
-    g_qtdCarros++; // (+ 1) toda vez que um carro ï¿½ cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
+    g_qtdCarros++; // (+ 1) toda vez que um carro é cadastrado. Evitando que os dados de novos clientes sejam sobreponham os dados dos clientes antigos.
 }
 
 void buscarClientePeloNome(char nome[50])
@@ -439,7 +438,7 @@ void buscarClientePeloNome(char nome[50])
             }
         }
     } else {
-        printf("Nï¿½o foi encontrado o cliente com nome %s", nome);
+        printf("Não foi encontrado o cliente com nome %s", nome);
     }
 }
 
@@ -464,7 +463,7 @@ void buscarCarroPelaPlaca(char placa[10])
 
     if (!encontrado)
     {
-        printf("Nï¿½o foi encontrado nenhum carro com placa %s", placa);
+        printf("Não foi encontrado nenhum carro com placa %s", placa);
     }
     
 }
@@ -495,7 +494,7 @@ void agendarServico()
 
     do
     {
-        printf("Digite o modelo do carro que deseja agendar o serviï¿½o: ");
+        printf("Digite o modelo do carro que deseja agendar o serviço: ");
         fgets(modelo, 50, stdin);
         modelo[strlen(modelo) - 1] = '\0';
         printf("Digite a placa do carro: ");
@@ -505,7 +504,7 @@ void agendarServico()
         validar = VincularCarro(modelo, placa);
         if (validar == -1)
         {
-            printf("Carro nï¿½o encontrado.\n");
+            printf("Carro não encontrado.\n");
         }
     } while (validar == -1);
 
@@ -514,16 +513,16 @@ void agendarServico()
 
     do
     {
-        printf("Digite o dia do serviï¿½o: ");
+        printf("Digite o dia do serviço: ");
         scanf("%d", &tempData.dia);
-        printf("Digite o mï¿½s do serviï¿½o: ");
+        printf("Digite o mês do serviço: ");
         scanf("%d", &tempData.mes);
-        printf("Digite o ano do serviï¿½o: ");
+        printf("Digite o ano do serviço: ");
         scanf("%d", &tempData.ano);
 
         if (!validarDataAnterior(tempData))
         {
-            printf("Data invï¿½lida\n");
+            printf("Data inválida\n");
         }
 
     } while (!validarDataAnterior(tempData));
@@ -533,17 +532,17 @@ void agendarServico()
 
     do
     {
-        printf("Digite o tipo de serviï¿½o que deseja fazer:\n");
-        printf("1 - Revisao bï¿½sica - R$750.00\n");
-        printf("2 - Troca de ï¿½leo - R$190.00\n");
+        printf("Digite o tipo de serviço que deseja fazer:\n");
+        printf("1 - Revisao básica - R$750.00\n");
+        printf("2 - Troca de óleo - R$190.00\n");
         printf("3 - Alinhamento e balanceamento - R$120.00\n");
-        printf("4 - Higienizaï¿½ï¿½o - R$90.00\n");
+        printf("4 - Higienização - R$90.00\n");
         scanf("%d", &tipo);
         getchar();
 
         if (tipo != 1 && tipo != 2 && tipo != 3 && tipo != 4)
         {
-            printf("Tipo invï¿½lido.\n");
+            printf("Tipo inválido.\n");
         }
 
     } while (tipo != 1 && tipo != 2 && tipo != 3 && tipo != 4);
@@ -583,16 +582,16 @@ void valoresPendentes(void)
                     switch (tipo)
                     {
                     case 1:
-                        printf("Serviï¿½o de Revisï¿½o bï¿½sica (750,0) - nï¿½o pago\n");
+                        printf("Serviço de Revisão básica (750,0) - não pago\n");
                         break;
                     case 2:
-                        printf("Serviï¿½o de Troca de ï¿½leo (190,0) - nï¿½o pago\n");
+                        printf("Serviço de Troca de óleo (190,0) - não pago\n");
                         break;
                     case 3:
-                        printf("Serviï¿½o de Alinhamento e balanceamento (120,0) - nï¿½o pago\n");
+                        printf("Serviço de Alinhamento e balanceamento (120,0) - não pago\n");
                         break;
                     case 4:
-                        printf("Serviï¿½o de Higienizaï¿½ï¿½o (90,0) - nï¿½o pago\n");
+                        printf("Serviço de Higienização (90,0) - não pago\n");
                         break;
                     }
                 }
@@ -601,7 +600,7 @@ void valoresPendentes(void)
 
         if (!encontrouServico)
         {
-            printf("Nï¿½o possui serviï¿½o no momento.\n");
+            printf("Não possui serviço no momento.\n");
         }
 
         linha();
@@ -612,15 +611,15 @@ void registrarPagamento(void) {
     int i = 0;
     int input = 0;
     int maiorId = 0;
-    char servicos[4][50] = {"Revisï¿½o bï¿½sica", "Troca de ï¿½leo", "Alinhamento e balanceamento", "Higienizaï¿½ï¿½o"};
+    char servicos[4][50] = {"Revisão básica", "Troca de óleo", "Alinhamento e balanceamento", "Higienização"};
 
     for (i = 0; i < g_qtdServicos; i++)
     {   
-        printf("Identificador do serviï¿½o: %d\n", g_servicos[i].identificador);
+        printf("Identificador do serviço: %d\n", g_servicos[i].identificador);
         printf("Carro: %s\n", g_servicos[i].carro.modelo);
         printf("Placa do carro: %s\n", g_servicos[i].carro.placa);
-        printf("Serviï¿½o: %s\n", servicos[g_servicos[i].tipoDeServico - 1]);
-        printf("Situaï¿½ï¿½o do pagamento: %s\n", g_servicos[i].pago == 'N' ? "Pendente\n" : "Concluï¿½do\n");
+        printf("Serviço: %s\n", servicos[g_servicos[i].tipoDeServico - 1]);
+        printf("Situação do pagamento: %s\n", g_servicos[i].pago == 'N' ? "Pendente\n" : "Concluído\n");
 
         if(g_servicos[i].identificador > maiorId) {
             maiorId = g_servicos[i].identificador;
@@ -631,12 +630,12 @@ void registrarPagamento(void) {
 
     do
     {
-        printf("Digite o identificador do serviï¿½o que deseja pagar: ");
+        printf("Digite o identificador do serviço que deseja pagar: ");
         scanf("%d", &input);
 
         if (input == 0)
         {
-            printf("Invï¿½lido\n");
+            printf("Inválido\n");
         }
         
     } while (input == 0);
@@ -644,9 +643,9 @@ void registrarPagamento(void) {
     if (input <= maiorId)
     {
         g_servicos[input - 1].pago = 'S';
-        printf("O serviï¿½o %s, vinculado ao carro com placa %s foi concluï¿½do!\n", servicos[g_servicos[input - 1].tipoDeServico - 1], g_servicos[input - 1].carro.placa);
+        printf("O serviço %s, vinculado ao carro com placa %s foi concluído!\n", servicos[g_servicos[input - 1].tipoDeServico - 1], g_servicos[input - 1].carro.placa);
     } else {
-        printf("Nao ha um serviï¿½o com este identificador!");
+        printf("Nao ha um serviço com este identificador!");
     }
 
     linha();
@@ -660,12 +659,12 @@ void servicoMaisUsado(void)
     int maiorQtd = 0;
 
     if (g_qtdServicos == 0)
-    { // Caso nï¿½o haja nenhum serviï¿½o registrado ainda
-        printf("\nNenhum serviï¿½o registrado ainda\n");
+    { // Caso não haja nenhum serviço registrado ainda
+        printf("\nNenhum serviço registrado ainda\n");
         return;
     }
 
-    for (i = 0; i < g_qtdServicos; i++) // Contador de quantas vezes o serviï¿½o foi pedido
+    for (i = 0; i < g_qtdServicos; i++) // Contador de quantas vezes o serviço foi pedido
     {
         id_Servico = g_servicos[i].tipoDeServico;
         cont[id_Servico - 1]++;
@@ -674,23 +673,23 @@ void servicoMaisUsado(void)
     for (i = 0; i < 4; i++)
     {
         if (cont[i] > maiorQtd)
-        { // Compara os valores e identifica a maior quantidades de pedidos de um serviï¿½o
+        { // Compara os valores e identifica a maior quantidades de pedidos de um serviço
             maiorQtd = cont[i];
         }
     }
 
-    printf("Serviï¿½o(s) mais pedido(s): \n");
+    printf("Serviço(s) mais pedido(s): \n");
     for (i = 0; i < 4; i++)
     {
         if (cont[i] == maiorQtd)
-        { // Mostrar o(s) serviï¿½o(s) mais usado(s)
+        { // Mostrar o(s) serviço(s) mais usado(s)
             switch (i + 1)
             {
             case 1:
-                printf("- Revisï¿½o bï¿½sica\n");
+                printf("- Revisão básica\n");
                 break;
             case 2:
-                printf("- Troca de ï¿½leo\n");
+                printf("- Troca de óleo\n");
                 break;
 
             case 3:
@@ -698,7 +697,7 @@ void servicoMaisUsado(void)
                 break;
 
             case 4:
-                printf("- Higienizaï¿½ï¿½o \n");
+                printf("- Higienização \n");
                 break;
 
             default:
@@ -714,7 +713,7 @@ void promocaoAniversario(int dia, int mes) {
     {
         if (g_clientes[i].aniversario.mes == mes && (g_clientes[i].aniversario.dia >= dia && g_clientes[i].aniversario.dia <= (dia + 7)))
         {
-            printf("O cliente %s foi selecionado para a promoï¿½ï¿½o!\n", g_clientes[i].nome);
+            printf("O cliente %s foi selecionado para a promoção!\n", g_clientes[i].nome);
         }
     }
     getchar();
@@ -722,18 +721,18 @@ void promocaoAniversario(int dia, int mes) {
 
 
 /**********************************************
-              Validaï¿½ï¿½o de Dados
+              Validação de Dados
 **********************************************/
 
 int validarNome(char nome[50])
 { // (1) Verdadeiro -- (0) Falso
     if ((strlen(nome) > 5) && contemSomenteLetras(nome) && (nome[0] != ' '))
     {
-        return 1; // -- Nome Vï¿½lido
+        return 1; // -- Nome Válido
     }
     else
     {
-        return 0; // -- Nome Invï¿½lido
+        return 0; // -- Nome Inválido
     }
 }
 
@@ -741,11 +740,11 @@ int validarTelefone(char telefone[15])
 { // (1) Verdadeiro -- (0) Falso
     if (telefone[0] == '0' && (strlen(telefone) == 11 || strlen(telefone) == 12) && contemSomenteNumeros(telefone))
     {
-        return 1; // -- Telefone Vï¿½lido
+        return 1; // -- Telefone Válido
     }
     else
     {
-        return 0; // -- Telefone Invï¿½lido
+        return 0; // -- Telefone Inválido
     }
 }
 
@@ -753,63 +752,63 @@ int validarData(Data dt)
 {
     int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o nï¿½mero de dias no mï¿½s digitado
+    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
 
     if ((dt.mes == 2) && anoBissexto(dt.ano))
-    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao nï¿½mero de dias no mes
+    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mes
         diasNoMes = 29;
     }
 
     if ((dt.dia < 1) || (dt.dia > diasNoMes))
-    { // Testando se o dia ï¿½ Valido
+    { // Testando se o dia é Valido
         return 0;
     }
 
     if ((dt.mes < 1) || (dt.mes > 12))
-    { // Testando se o mï¿½s ï¿½ Valido
+    { // Testando se o mês é Valido
         return 0;
     }
 
     if ((dt.ano < 1900) || (dt.ano > 2025))
-    { // Testando se o ano ï¿½ Valido
+    { // Testando se o ano é Valido
         return 0;
     }
 
     if (dt.ano > 2025 || (dt.ano == 2025 && dt.dia > 30) || (dt.ano == 2025 && dt.mes > 6))
-    { // Testando se ï¿½ posterior que a data de hoje
+    { // Testando se é posterior que a data de hoje
         return 0;
     }
 
-    return 1; // Retornar verdadeiro(1) pois a data ï¿½ Valida
+    return 1; // Retornar verdadeiro(1) pois a data é Valida
 }
 
 int validarDataAnterior(Data dt)
 {
     int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o nï¿½mero de dias no mï¿½s digitado
+    int diasNoMes = diasEmCadaMesPadrao[dt.mes - 1]; // Atribui o número de dias no mês digitado
 
     if ((dt.mes == 2) && anoBissexto(dt.ano))
-    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao nï¿½mero de dias no mï¿½s
+    { // Se for Fevereiro e for ano Bissexto, atribui 29 ao número de dias no mês
         diasNoMes = 29;
     }
 
     if ((dt.dia < 1) || (dt.dia > diasNoMes))
-    { // Testando se o dia ï¿½ Valido
+    { // Testando se o dia é Valido
         return 0;
     }
 
     if ((dt.mes < 1) || (dt.mes > 12))
-    { // Testando se o mï¿½s ï¿½ Valido
+    { // Testando se o mês é Valido
         return 0;
     }
 
     if (dt.ano < 2025 || (dt.ano == 2025 && dt.mes < 6) || (dt.ano == 2025 && dt.mes == 6 && dt.dia < 30))
-    { // Testando se ï¿½ anterior que a data de hoje
+    { // Testando se é anterior que a data de hoje
         return 0;
     }
 
-    return 1; // Retornar verdadeiro(1) pois a data ï¿½ Valida
+    return 1; // Retornar verdadeiro(1) pois a data é Valida
 }
 
 int validarAnoFabricacao(int ano)
@@ -857,18 +856,18 @@ int contemSomenteNumeros(char text[15])
             return 0; // -- Outros Caracteres
         }
     }
-    return 1; // -- Somente Nï¿½meros
+    return 1; // -- Somente Números
 }
 
 int anoBissexto(int ano)
 { // Testando anos bissextos
-    /* Testa se ï¿½ divisivel por 4, e ao mesmo tempo, se ï¿½ divisivel por 400 ou Nï¿½o ï¿½ divisivel por 100 */
+    /* Testa se é divisivel por 4, e ao mesmo tempo, se é divisivel por 400 ou Nâo é divisivel por 100 */
     return (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));
     /* Retorna -- (1) Verdadeiro -- (0) Falso */
 }
 
 /**********************************************
-             Vinculaï¿½ï¿½o de Dados
+             Vinculação de Dados
 **********************************************/
 
 int VincularCliente(char nomeCliente[50])
@@ -878,10 +877,10 @@ int VincularCliente(char nomeCliente[50])
     {
         if (strcmp(nomeCliente, g_clientes[pos].nome) == 0)
         {
-            return pos; // -- Retorna a posiï¿½ï¿½o do Cliente
+            return pos; // -- Retorna a posição do Cliente
         }
     }
-    return (-1); // -- Cliente nï¿½o encontrado
+    return (-1); // -- Cliente não encontrado
 }
 
 int VincularCarro(char modeloCarro[50], char placaCarro[15])
@@ -891,10 +890,10 @@ int VincularCarro(char modeloCarro[50], char placaCarro[15])
     {
         if (strcmp(modeloCarro, g_carros[pos].modelo) == 0 && strcmp(placaCarro, g_carros[pos].placa) == 0)
         {
-            return pos; // -- Retorna a posiï¿½ï¿½o do Carro
+            return pos; // -- Retorna a posição do Carro
         }
     }
-    return (-1); // -- Carro nï¿½o encontrado
+    return (-1); // -- Carro não encontrado
 }
 
 void agruparPorAno()
@@ -908,7 +907,7 @@ void agruparPorAno()
         {
             if (g_carros[i].anoFabricacao > g_carros[j].anoFabricacao)
             {
-                // Trocar os carros, ordenando por ano de fabricaï¿½ï¿½o
+                // Trocar os carros, ordenando por ano de fabricação
                 Carro temp = g_carros[i];
                 g_carros[i] = g_carros[j];
                 g_carros[j] = temp;
@@ -919,7 +918,7 @@ void agruparPorAno()
     int anoAtual = 0;
     for (i = 0; i < g_qtdCarros; i++)
     {
-        // Se o ano de fabricaï¿½ï¿½o nï¿½o for igual ao da variï¿½vel anoAtual, essa variï¿½vel irï¿½ receber outro ano.
+        // Se o ano de fabricação não for igual ao da variável anoAtual, essa variável irá receber outro ano.
         if (g_carros[i].anoFabricacao != anoAtual)
         {
             printf("%d\n", g_carros[i].anoFabricacao);
@@ -971,7 +970,7 @@ void agruparOrdemAlfabetica() { // Ordena e lista os carros por ordem alfabetica
 }
 
 /**********************************************
-                Funï¿½ï¿½es Internas
+                Funções Internas
 **********************************************/
 
 void linha(void)
