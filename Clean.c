@@ -1,3 +1,16 @@
+/*********************************************************************
+|--------------------------------------------------------------------|
+|                           TRABALHO FINAL                           |
+|   SISTEMA GERENCIADOR DE SERVIÇOS DE UMA CONCESSIONÁRIA (SGC)      |
+|--------------------------------------------------------------------|
+|  Truma.: EC41F Algoritos 1                                         |
+|                                                                    |
+|  Integrantes..:                                                    |
+|      Eduardo Camargo Bougo                                         |
+|      Gustavo Freschi Madureira                                     |
+|                                                                    |
+*********************************************************************/
+
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
