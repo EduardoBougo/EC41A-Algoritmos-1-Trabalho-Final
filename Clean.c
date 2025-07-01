@@ -275,11 +275,11 @@ void mostrarMenu(void)
     printf(" | 4  - Buscar Carro pela Placa                     |\n");
     printf(" | 5  - Quantidade de Carros com Kilometragem Acima |\n");
     printf(" | 6  - Agendar serviço                             |\n");
-    printf(" | 7  - Consultar valores pendentes                 |\n");
+    printf(" | 7  - Consultar valores pendentes/concluídos      |\n");
     printf(" | 8  - Registrar pagamento                         |\n");
     printf(" | 9  - Mostrar o serviço mais solicitado           |\n");
     printf(" | 10 - Conferir promoção de aniversário            |\n");
-    printf(" | 11 - Listar carrospor ordem alfabética           |\n");
+    printf(" | 11 - Listar carros por ordem alfabética          |\n");
     printf(" | 0 - Sair                                         |\n");
     printf(" |--------------------------------------------------|\n");
     printf(" Escolha uma opçao: ");
@@ -431,7 +431,7 @@ void buscarClientePeloNome(char nome[50])
         {
             printf("Nome: %s\n", g_clientes[cli_pos].nome);
             printf("Telefone: %s\n", g_clientes[cli_pos].telefone);
-            printf("Data de nascimento: %02d/%02d/%04d", g_clientes[cli_pos].aniversario.dia, g_clientes[cli_pos].aniversario.mes, g_clientes[cli_pos].aniversario.ano);
+            printf("Data de nascimento: %02d/%02d/%04d\n", g_clientes[cli_pos].aniversario.dia, g_clientes[cli_pos].aniversario.mes, g_clientes[cli_pos].aniversario.ano);
             encontrado = 1;
             break;
         }
@@ -497,7 +497,7 @@ int kilometragemCarros(float km)
     return qtd;
 }
 
-void agendarServico()
+void agendarServico() // Adiciona um novo serviço vinculado ao carro que o cliente desejar
 {
     int validar = 0;
     int tipo = 0;
@@ -573,7 +573,7 @@ void agendarServico()
     linha();
 }
 
-void valoresPendentes(void)
+void valoresPendentes(void) // Mostra os serviços que estão pendentes (não pagos) e concluídos (pagos).
 {
     int i = 0;
     int j = 0;
@@ -589,22 +589,38 @@ void valoresPendentes(void)
             if (strcmp(carroAtual.placa, g_servicos[j].carro.placa) == 0)
             {
                 encontrouServico = 1;
+                int tipo = g_servicos[j].tipoDeServico;
                 if (g_servicos[j].pago == 'N')
                 {
-                    int tipo = g_servicos[j].tipoDeServico;
                     switch (tipo)
                     {
                     case 1:
-                        printf("Serviço de Revisão básica (750,0) - não pago\n");
+                        printf("Serviço de Revisão básica (750,0) - não pago | ID: %d\n", g_servicos[j].identificador);
                         break;
                     case 2:
-                        printf("Serviço de Troca de óleo (190,0) - não pago\n");
+                        printf("Serviço de Troca de óleo (190,0) - não pago | ID: %d\n", g_servicos[j].identificador);
                         break;
                     case 3:
-                        printf("Serviço de Alinhamento e balanceamento (120,0) - não pago\n");
+                        printf("Serviço de Alinhamento e balanceamento (120,0) - não pago | ID: %d\n", g_servicos[j].identificador);
                         break;
                     case 4:
-                        printf("Serviço de Higienização (90,0) - não pago\n");
+                        printf("Serviço de Higienização (90,0) - não pago | ID: %d\n", g_servicos[j].identificador);
+                        break;
+                    }
+                } else {
+                    switch (tipo)
+                    {
+                    case 1:
+                        printf("Serviço de Revisão básica (750,0) - pago | ID: %d\n", g_servicos[j].identificador);
+                        break;
+                    case 2:
+                        printf("Serviço de Troca de óleo (190,0) - pago | ID: %d\n", g_servicos[j].identificador);
+                        break;
+                    case 3:
+                        printf("Serviço de Alinhamento e balanceamento (120,0) - pago | ID: %d\n", g_servicos[j].identificador);
+                        break;
+                    case 4:
+                        printf("Serviço de Higienização (90,0) - pago | ID: %d\n", g_servicos[j].identificador);
                         break;
                     }
                 }
@@ -620,7 +636,7 @@ void valoresPendentes(void)
     }
 }
 
-void registrarPagamento(void) {
+void registrarPagamento(void) { // Mostra todos os serviços e realiza pagamento de acordo com o identificador que o cliente escolher
     int i = 0;
     int input = 0;
     int maiorId = 0;
@@ -720,15 +736,24 @@ void servicoMaisUsado(void)
     }
 }
 
-void promocaoAniversario(int dia, int mes) {
+void promocaoAniversario(int dia, int mes) { // Exibe os clientes selecionados para uma promoção caso sua data de aniversário esteja em um intervalo de 7 dias a partir da data dada. 
     int i = 0;
+    int encontrado = 0;
+    char meses[12][15] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
     for (i = 0; i < g_qtdClientes; i++)
     {
         if (g_clientes[i].aniversario.mes == mes && (g_clientes[i].aniversario.dia >= dia && g_clientes[i].aniversario.dia <= (dia + 7)))
         {
-            printf("O cliente %s foi selecionado para a promoção!\n", g_clientes[i].nome);
+            printf("O cliente %s foi selecionado para a promoção do dia %d ao dia %d do mês de %s!\n", g_clientes[i].nome, dia, (dia + 7), meses[mes - 1]);
+            encontrado = 1;
         }
     }
+    
+    if (!encontrado)
+    {
+        printf("Não foi selecionado nenhum cliente para a promoção do dia %d ao dia %d do mês de %s!\n", dia, (dia + 7), meses[mes - 1]);
+    }
+    
     getchar();
 }
 
@@ -795,7 +820,7 @@ int validarData(Data dt)
     return 1; // Retornar verdadeiro(1) pois a data é Valida
 }
 
-int validarDataAnterior(Data dt)
+int validarDataAnterior(Data dt) // Verifica se a data é anterior à atual, pois não é possível agendar serviços no passado
 {
     int diasEmCadaMesPadrao[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -824,7 +849,7 @@ int validarDataAnterior(Data dt)
     return 1; // Retornar verdadeiro(1) pois a data é Valida
 }
 
-int validarAnoFabricacao(int ano)
+int validarAnoFabricacao(int ano) // Verifica se o ano de fabricação de um carro é posterior ao atual.
 {
     if (ano > 2025)
     {
@@ -920,7 +945,6 @@ void agruparPorAno()
         {
             if (g_carros[i].anoFabricacao > g_carros[j].anoFabricacao)
             {
-                // Trocar os carros, ordenando por ano de fabricação
                 Carro temp = g_carros[i];
                 g_carros[i] = g_carros[j];
                 g_carros[j] = temp;
